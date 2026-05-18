@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "mt5-mvp": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "mt5-mvp", "--transport", "stdio"],
+      "env": {
+        "MT5_LOGIN": "${MT5_LOGIN}",
+        "MT5_PASSWORD": "${MT5_PASSWORD}",
+        "MT5_SERVER": "${MT5_SERVER:-InstaForex-Server}",
+        "MT5_PATH": "${MT5_PATH:-C:\\Program Files\\MetaTrader\\terminal64.exe}",
+        "MT5_TIMEOUT": "${MT5_TIMEOUT:-60}",
+        "MT5_DRY_RUN": "${MT5_DRY_RUN:-1}",
+        "MT5_MAGIC": "${MT5_MAGIC:-900001}"
+      }
+    }
+  }
+}

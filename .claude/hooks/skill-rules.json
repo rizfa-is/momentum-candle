@@ -1,0 +1,81 @@
+{
+  "mt5-python-api": {
+    "description": "MetaTrader5 Python lib quirks: filling modes, retcodes, init/shutdown.",
+    "triggers": {
+      "keywords": ["MetaTrader5", "mt5.", "order_send", "symbol_info", "copy_rates", "retcode", "filling_mode"],
+      "keywordPatterns": ["\\bmt5\\.[a-z_]+\\b", "ORDER_FILLING_(?:FOK|IOC|RETURN)", "TRADE_RETCODE_"],
+      "pathPatterns": ["src/mt5_mvp/(client|trade|market|account|constants)\\.py"],
+      "intentPatterns": [
+        "(initialise|initialize|connect).*MT5",
+        "(filling|retcode|magic).*(broker|InstaForex)"
+      ]
+    },
+    "excludePatterns": []
+  },
+  "mcp-fastmcp": {
+    "description": "FastMCP tool decorators, transports, hints, instructions.",
+    "triggers": {
+      "keywords": ["FastMCP", "@mcp.tool", "MCP", "stdio transport", "SSE transport", "destructiveHint", "readOnlyHint"],
+      "keywordPatterns": ["\\bMCP\\b", "FastMCP\\(", "@mcp\\.tool"],
+      "pathPatterns": ["src/mt5_mvp/(server|cli)\\.py", "\\.mcp\\.json"],
+      "intentPatterns": [
+        "(register|expose|add).*(tool|MCP)",
+        "(stdio|sse|http).*transport"
+      ]
+    },
+    "excludePatterns": []
+  },
+  "trading-safety": {
+    "description": "Dry-run discipline, magic numbers, idempotent comments, CONFIRM_LIVE.",
+    "triggers": {
+      "keywords": ["dry-run", "dry_run", "MT5_DRY_RUN", "CONFIRM_LIVE", "magic number", "idempotency", "live trade", "live trading"],
+      "keywordPatterns": ["CONFIRM[_ ]LIVE", "DRY[_ ]?RUN", "magic\\s*number"],
+      "pathPatterns": ["\\.claude/hooks/live-trade-guard\\.sh", "src/mt5_mvp/trade\\.py"],
+      "intentPatterns": [
+        "(execute|place|send).*(live|real|production).*(trade|order)",
+        "(disable|enable).*dry.?run",
+        "(close|modify).*(position|order)"
+      ]
+    },
+    "excludePatterns": []
+  },
+  "pytest-mt5": {
+    "description": "Mocking the MetaTrader5 module, conftest patterns, integration test gating.",
+    "triggers": {
+      "keywords": ["pytest", "fixture", "monkeypatch", "MagicMock", "conftest", "integration test", "mocked MetaTrader5"],
+      "keywordPatterns": ["\\bpytest\\b", "@pytest\\.fixture", "MT5_INTEGRATION"],
+      "pathPatterns": ["tests/.*\\.py", "tests/conftest\\.py"],
+      "intentPatterns": [
+        "(write|add|create).*(test|spec)",
+        "mock(ing)?.*(MT5|MetaTrader)"
+      ]
+    },
+    "excludePatterns": []
+  },
+  "uv-python-tooling": {
+    "description": "uv add/sync/run, lockfile policy, .python-version.",
+    "triggers": {
+      "keywords": ["uv", "uv sync", "uv run", "uv add", "pyproject.toml", "uv.lock", ".python-version"],
+      "keywordPatterns": ["\\buv\\s+(sync|run|add|remove|lock|pip)\\b", "pyproject\\.toml"],
+      "pathPatterns": ["pyproject\\.toml", "uv\\.lock", "\\.python-version"],
+      "intentPatterns": [
+        "(install|add|update).*(dependency|package)",
+        "(setup|bootstrap).*(env|venv|environment)"
+      ]
+    },
+    "excludePatterns": ["pip install", "poetry"]
+  },
+  "candlestick-strategy": {
+    "description": "Momentum-candle pattern definition, entry/exit/sizing rules for XAUUSD.",
+    "triggers": {
+      "keywords": ["momentum candle", "XAUUSD", "gold", "engulfing", "pin bar", "ATR", "stop loss", "take profit", "RR"],
+      "keywordPatterns": ["X\\s*A\\s*U\\s*U\\s*S\\s*D", "stop[- ]?loss", "take[- ]?profit"],
+      "pathPatterns": ["docs/strategies/.*\\.md", "src/mt5_mvp/strategies/.*\\.py"],
+      "intentPatterns": [
+        "(design|build|describe).*strategy",
+        "(buy|sell)\\s+(signal|setup)"
+      ]
+    },
+    "excludePatterns": []
+  }
+}

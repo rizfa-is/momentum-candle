@@ -1,0 +1,32 @@
+# Ruff configuration. See https://docs.astral.sh/ruff/configuration/
+
+line-length = 100
+target-version = "py312"
+extend-exclude = [".venv", "build", "dist", "cache"]
+
+[lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific
+    "ANN", # flake8-annotations (require type hints)
+    "T20", # flake8-print (no print() — use logging)
+]
+ignore = [
+    "ANN401", # allow Any
+    "E501",   # line too long (handled by formatter)
+]
+
+[lint.per-file-ignores]
+"tests/**/*.py" = ["ANN", "T20"]
+".claude/hooks/**/*.py" = ["T20"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
