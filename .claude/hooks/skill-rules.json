@@ -91,5 +91,19 @@
       ]
     },
     "excludePatterns": []
+  },
+  "mql5-ea-patterns": {
+    "description": "MQL5 indicator and Expert Advisor patterns. Use when editing files under mql5/, fixing .mq5 compile errors, working with iCustom buffers, CTrade, or Strategy Tester.",
+    "triggers": {
+      "keywords": ["mql5", "MetaEditor", "iCustom", "CTrade", "Strategy Tester", "OnTick", "OnCalculate", "ENUM_ORDER_TYPE", ".mq5", ".mqh", ".ex5"],
+      "keywordPatterns": ["\\b(mq5|mqh|ex5)\\b", "iCustom\\s*\\(", "CTrade", "Strategy\\s+Tester"],
+      "pathPatterns": ["mql5/.*\\.mq[h5]", "docs/mql5-indicators\\.md"],
+      "intentPatterns": [
+        "(write|edit|fix).*(indicator|expert advisor|EA|MQL)",
+        "backtest.*(mql|expert|tester)",
+        "compile.*(mq5|mqh)"
+      ]
+    },
+    "excludePatterns": []
   }
 }
