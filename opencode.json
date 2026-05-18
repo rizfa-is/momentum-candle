@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "mt5-mvp": {
+      "type": "local",
+      "command": [
+        "cmd",
+        "/c",
+        "cd /d D:\\CODING\\Trading\\mt5-mcp\\momentum-candle && uv run mt5-mvp --transport stdio"
+      ],
+      "enabled": true,
+      "timeout": 120000
+    }
+  }
+}
