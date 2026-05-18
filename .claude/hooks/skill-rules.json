@@ -77,5 +77,19 @@
       ]
     },
     "excludePatterns": []
+  },
+  "momentum-candle": {
+    "description": "Momentum-candle strategy: trigger thresholds, breakout/pullback/trend patterns, Fibonacci-based SL/TP for XAUUSD.",
+    "triggers": {
+      "keywords": ["momentum candle", "scan_momentum_setups", "fibonacci", "fib", "breakout", "pullback", "trend continuation", "1.27 extension", "23.6"],
+      "keywordPatterns": ["momentum[ _-]candle", "fib\\.?\\s*(0\\.236|23\\.?6|1\\.27|127)"],
+      "pathPatterns": ["src/mt5_mvp/strategies/.*\\.py", "docs/strategies/momentum-candle\\.md", "tests/test_momentum_candle\\.py"],
+      "intentPatterns": [
+        "(scan|find|look\\s+for).*(momentum|setup|signal)",
+        "(any|new).*setup.*(XAUUSD|gold|H1|M15|M5)",
+        "(plan|design|extend).*(detector|strategy|momentum)"
+      ]
+    },
+    "excludePatterns": []
   }
 }
