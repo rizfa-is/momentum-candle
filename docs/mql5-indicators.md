@@ -10,6 +10,7 @@ Fibonacci levels, and pattern classifier, but differ in how they answer
 |---|---|---|---|
 | `MomentumCandle_Video.mq5` | **Video-faithful** | `range >= 1.5x mean(range, last 5)` | `tick_volume >= 1.5x mean(tick_volume, last 5)` |
 | `MomentumCandle_Proxy.mq5` | ATR / SMA proxy | `range >= 1.0x ATR(14)` | `tick_volume >= 1.5x SMA(tick_volume, 20)` |
+| `MomentumCandle_Visualizer.mq5` | Visual aid (no signals) | `same as Video` | `same as Video` |
 
 Plus a backtest harness EA:
 
@@ -17,9 +18,61 @@ Plus a backtest harness EA:
 |---|---|
 | `MomentumCandleBacktest.mq5` | Reads either indicator's `Direction`/`Confidence` buffers via `iCustom` and opens market orders in the Strategy Tester. Tagged with magic number for clean run isolation. |
 
-The two indicators draw on the chart and expose four buffers
+The two scoring indicators draw on the chart and expose four buffers
 (`Buy`, `Sell`, `Direction`, `Confidence`). The EA only consumes
-`Direction` and `Confidence` — pure mechanical execution.
+`Direction` and `Confidence` — pure mechanical execution. The
+visualizer is read-only and exists to close the gap between what your
+eye sees and what the algorithm decides.
+
+## Visualizer — close the eye-vs-algorithm gap
+
+`MomentumCandle_Visualizer.mq5` answers the question "why did the
+algorithm reject this candle that I clearly see as a momentum bar?"
+
+For every closed bar, it draws two horizontal "whiskers" centered on
+the bar's midpoint:
+
+- **Gray whisker** — width = `mean(range, last N)`. The local baseline.
+  This is what "normal-sized" looks like right now.
+- **Colored whisker** — width = `baseline x InpRangeMult`. The
+  threshold the candle must exceed to pass the range filter.
+  - **Lime** — bar passes all four filters.
+  - **Gold** — bar passes 3 of 4 (borderline).
+  - **Crimson** — bar fails 2 or more filters.
+
+If the candle's high–low pokes outside the colored whisker on the
+vertical axis, it cleared the range filter. If it sits inside, range
+was insufficient.
+
+A small text tag prints above each interesting bar (3+ filters pass)
+showing per-filter PASS/FAIL flags and the actual numbers, e.g.
+`BWRv 87% 1.8xR 1.4xV` (capital letter = pass, lowercase = fail).
+
+A top-left **HUD** prints the same data live for the most recently
+closed bar:
+
+```
+==== MC Visualizer ====
+Inputs: N=5  body>=70%  wick<=10%  range>=1.50x  vol>=1.50x
+
+Last closed bar (2026.05.18 15:00):  BULL  range=12.40
+  body  =  82.0%   PASS  (need >= 70%)
+  wick  =   6.0%   PASS  (need <= 10%)
+  range =  1.62x   PASS  (need >= 1.50x)
+  vol   =  1.31x   FAIL  (need >= 1.50x)
+
+Verdict: BORDERLINE (3 of 4 passed)
+  Failing: volume
+```
+
+That's the answer to "why was that candle rejected?" — explicit,
+quantitative, and tied to the same five inputs the scoring indicators
+use.
+
+The visualizer is purely a learning / diagnostic tool. It writes no
+signal buffers, never triggers an alert, never feeds the EA. Drag it
+on the chart whenever you want to understand *why*; remove it when you
+just want clean signals.
 
 ## Install on Windows
 
@@ -49,10 +102,11 @@ $dst = "$env:APPDATA\MetaQuotes\Terminal\<TERMINAL_INSTANCE_ID>\MQL5"
 # Replace <TERMINAL_INSTANCE_ID> with the long hex string under
 # %APPDATA%\MetaQuotes\Terminal\ — usually one folder per MT5 install.
 
-Copy-Item "$src\Include\MomentumCandleCommon.mqh"      "$dst\Include\"      -Force
-Copy-Item "$src\Indicators\MomentumCandle_Video.mq5"   "$dst\Indicators\"   -Force
-Copy-Item "$src\Indicators\MomentumCandle_Proxy.mq5"   "$dst\Indicators\"   -Force
-Copy-Item "$src\Experts\MomentumCandleBacktest.mq5"    "$dst\Experts\"      -Force
+Copy-Item "$src\Include\MomentumCandleCommon.mqh"          "$dst\Include\"      -Force
+Copy-Item "$src\Indicators\MomentumCandle_Video.mq5"       "$dst\Indicators\"   -Force
+Copy-Item "$src\Indicators\MomentumCandle_Proxy.mq5"       "$dst\Indicators\"   -Force
+Copy-Item "$src\Indicators\MomentumCandle_Visualizer.mq5"  "$dst\Indicators\"   -Force
+Copy-Item "$src\Experts\MomentumCandleBacktest.mq5"        "$dst\Experts\"      -Force
 ```
 
 Open MetaEditor (F4 from MT5), open each `.mq5` file, press **F7** to
