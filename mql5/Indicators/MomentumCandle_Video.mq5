@@ -108,12 +108,12 @@ int OnCalculate(const int rates_total,
                 const long    &volume[],
                 const int     &spread[])
   {
-   ArraySetAsSeries((datetime &)time,        true);
-   ArraySetAsSeries((double  &)open,         true);
-   ArraySetAsSeries((double  &)high,         true);
-   ArraySetAsSeries((double  &)low,          true);
-   ArraySetAsSeries((double  &)close,        true);
-   ArraySetAsSeries((long    &)tick_volume,  true);
+   ArraySetAsSeries(time,        true);
+   ArraySetAsSeries(open,        true);
+   ArraySetAsSeries(high,        true);
+   ArraySetAsSeries(low,         true);
+   ArraySetAsSeries(close,       true);
+   ArraySetAsSeries(tick_volume, true);
 
    const int min_history = MathMax(InpLocalLookback + 5, 30);
    if(rates_total < min_history)
