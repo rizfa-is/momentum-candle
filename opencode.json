@@ -4,9 +4,13 @@
     "mt5-mvp": {
       "type": "local",
       "command": [
-        "cmd",
-        "/c",
-        "cd /d D:\\CODING\\Trading\\mt5-mcp\\momentum-candle && uv run mt5-mvp --transport stdio"
+        "C:\\Users\\DELL\\AppData\\Local\\Microsoft\\WinGet\\Packages\\astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe\\uv.exe",
+        "run",
+        "--directory",
+        "D:\\CODING\\Trading\\mt5-mcp\\momentum-candle",
+        "mt5-mvp",
+        "--transport",
+        "stdio"
       ],
       "enabled": true,
       "timeout": 120000
