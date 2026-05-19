@@ -15,21 +15,21 @@ Updated whenever a worksheet's eye-tag block is parsed.
 |---|---|---:|---:|---:|---|---:|---|
 | Tue 2026-05-12 | `2026-05-12-tue.md` | 276 | 101 | 50 | NO  | — | — |
 | Wed 2026-05-13 | `2026-05-13-wed.md` | 276 |  98 | 50 | NO  | — | — |
-| Thu 2026-05-14 | `2026-05-14-thu.md` | 276 | 103 | 50 | NO  | — | — |
+| Thu 2026-05-14 | `2026-05-14-thu.md` | 276 | 103 | 50 | **YES** (50/50) | **2** | 2026-05-19 |
 | Fri 2026-05-15 | `2026-05-15-fri.md` | 276 | 110 | 50 | **YES** (50/50) | **6** | 2026-05-19 |
 | Mon 2026-05-18 | `2026-05-18-mon.md` | 248 |  96 | 50 | NO  | — | — |
 
 ## Aggregate
 
-- Days tagged: **1 / 5**
-- Total YES tags: **6**
-- Total NO tags: **44**
+- Days tagged: **2 / 5**
+- Total YES tags: **8**
+- Total NO tags: **92**
 - Total bars considered: 1,352
 - Total top-50 candidates across all days: 250
 
 ## YES tags so far
 
-### Fri 2026-05-15 (6 YES)
+### Fri 2026-05-15 (6 YES — high-volatility day)
 
 | Row | UTC | Pattern | Range | Body% | Wick% | R5 | V5 | Sess | Ctx | Algo | 20pt |
 |---:|---|---|---:|---:|---:|---:|---:|---|---|---|---|
@@ -40,7 +40,69 @@ Updated whenever a worksheet's eye-tag block is parsed.
 | 37 | 16:35 | breakout     | 16.08 | 87% | 12% | 1.72x | 1.35x | N | —    | —    | — |
 | 39 | 17:15 | reversal     | 17.89 | 84% |  0% | 1.62x | 1.05x | N | —    | —    | — |
 
-NO reasoning was uniformly **"open-close point to small"** across all 44 NO tags. This is a **strong signal** — the user's primary rejection criterion on this day was absolute body size, not geometry or volume.
+### Thu 2026-05-14 (2 YES — normal-volatility day, both reversals)
+
+| Row | UTC | Pattern | Range | Body% | Wick% | R5 | V5 | Sess | Ctx | Algo | 20pt |
+|---:|---|---|---:|---:|---:|---:|---:|---|---|---|---|
+|  8 | 04:00 | reversal | 12.61 | 52% | 34% | 2.40x | 2.38x | A | SEV | — | — |
+| 18 | 07:25 | reversal | 16.07 | 67% | 32% | 2.62x | 1.81x | A | E   | — | — |
+
+User note on row 18: "even with long top-wick, support with previous candle body is big even not in criteria" — explicit confirmation that the reversal exception relaxes geometric criteria when prior-bar context is supportive.
+
+NO reasoning was uniformly **"open-close point to small"** across all 92 NO tags so far. Absolute size remains the dominant rejection criterion.
+
+## Combined-day statistics (2 days, 8 YES, 92 NO)
+
+### Range
+- YES: min 12.61 / mean 16.24 / max 22.51
+- NO:  min 2.21 / mean 8.05 / max 14.89
+- **Floor revised to 12.5 pts** (was 15 after Fri only, 20 originally)
+
+### Body%
+- Continuation/breakout YES (n=4 across both days): 85-96%
+- Reversal YES (n=4 across both days): 52%, 67%, 84%, 86%
+- **The reversal exception is REAL.** Body floor splits into two regimes:
+  - non-reversal: ≥ 84%
+  - reversal: ≥ 50% with strong engulfing/swing-extreme context
+
+### Close-side wick%
+- Continuation/breakout YES: 0–12% (all ≤ 12%)
+- Reversal YES: 0%, 6%, 32%, 34%
+- **Reversal exception relaxes wick to ≤ 35%** when E is present.
+
+### Context tag lift (combined)
+| Tag | YES rate | NO rate | Lift |
+|---|---:|---:|---:|
+| E engulfing       | 5/8 (62%) | 43/92 (47%) | +1.3x |
+| T trend-monotonic | 4/8 (50%) | 23/92 (25%) | +2.0x |
+| S swing-extreme   | 2/8 (25%) | 18/92 (20%) | +1.3x |
+| V velocity-flip   | 2/8 (25%) | 47/92 (51%) | -2.0x (negative!) |
+| R round-number    | 0/8 (0%)  | 29/92 (32%) | -inf (negative!) |
+| C consolidation   | 0/8 (0%)  |  4/92 (4%)  | weak negative |
+
+**E and T are the two real contextual signals so far.** R and V should be dropped from the eye-model — they correlate with NO more than with YES.
+
+## Provisional eye-model (after 2 of 5 days)
+
+```
+def is_momentum_candle(bar):
+    if bar.range < 12.5: return False         # absolute size floor
+    if not is_active_session(bar.time):       # Asia 23-08 UTC OR NY 12-22 UTC
+        return False  # tentative — needs Mon/Tue/Wed validation
+
+    if reversal_context(bar):                 # E or strong S
+        # relaxed geometry
+        return bar.body_pct >= 0.50 and bar.wick_pct <= 0.35
+    else:
+        # standard geometry (continuation/breakout)
+        return bar.body_pct >= 0.84 and bar.wick_pct <= 0.12
+
+def reversal_context(bar):
+    return bar.engulfs_prior or bar.near_swing_extreme
+```
+
+This is the first hypothesis that fits ALL 8 YES tags so far. Next sessions
+(Mon, Tue, Wed) will test whether it holds or needs revision.
 
 ## Eye-tag format reference
 
