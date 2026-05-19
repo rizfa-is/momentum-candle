@@ -16,15 +16,31 @@ Updated whenever a worksheet's eye-tag block is parsed.
 | Tue 2026-05-12 | `2026-05-12-tue.md` | 276 | 101 | 50 | NO  | — | — |
 | Wed 2026-05-13 | `2026-05-13-wed.md` | 276 |  98 | 50 | NO  | — | — |
 | Thu 2026-05-14 | `2026-05-14-thu.md` | 276 | 103 | 50 | NO  | — | — |
-| Fri 2026-05-15 | `2026-05-15-fri.md` | 276 | 110 | 50 | NO  | — | — |
+| Fri 2026-05-15 | `2026-05-15-fri.md` | 276 | 110 | 50 | **YES** (50/50) | **6** | 2026-05-19 |
 | Mon 2026-05-18 | `2026-05-18-mon.md` | 248 |  96 | 50 | NO  | — | — |
 
 ## Aggregate
 
-- Days tagged: **0 / 5**
-- Total YES tags: **0**
+- Days tagged: **1 / 5**
+- Total YES tags: **6**
+- Total NO tags: **44**
 - Total bars considered: 1,352
 - Total top-50 candidates across all days: 250
+
+## YES tags so far
+
+### Fri 2026-05-15 (6 YES)
+
+| Row | UTC | Pattern | Range | Body% | Wick% | R5 | V5 | Sess | Ctx | Algo | 20pt |
+|---:|---|---|---:|---:|---:|---:|---:|---|---|---|---|
+|  5 | 02:30 | reversal     | 15.18 | 86% |  6% | 3.61x | 1.90x | A | STEV | ALGO | — |
+|  7 | 03:25 | continuation | 14.95 | 96% |  2% | 1.78x | 1.27x | A | T    | —    | — |
+| 10 | 04:05 | breakout     | 14.67 | 88% |  2% | 1.39x | 1.31x | A | TE   | —    | — |
+| 21 | 08:30 | breakout     | 22.51 | 85% | 10% | 2.66x | 1.64x | L | T    | —    | 20pt |
+| 37 | 16:35 | breakout     | 16.08 | 87% | 12% | 1.72x | 1.35x | N | —    | —    | — |
+| 39 | 17:15 | reversal     | 17.89 | 84% |  0% | 1.62x | 1.05x | N | —    | —    | — |
+
+NO reasoning was uniformly **"open-close point to small"** across all 44 NO tags. This is a **strong signal** — the user's primary rejection criterion on this day was absolute body size, not geometry or volume.
 
 ## Eye-tag format reference
 
