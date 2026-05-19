@@ -5,6 +5,7 @@ MQL5 source for the momentum-candle indicators and the backtest harness.
 | Path | Role |
 |---|---|
 | `Include/MomentumCandleCommon.mqh` | Shared enums, structs, indicators, classifier, scorer |
+| `Indicators/MomentumCandle_Simple.mq5` | Minimal arrow-only indicator: body% + close-wick% + body in points (3 inputs, no baseline / no fib / no pattern) |
 | `Indicators/MomentumCandle_Video.mq5` | Variant 1 — video-faithful (local-N range/volume) |
 | `Indicators/MomentumCandle_Proxy.mq5` | Variant 2 — ATR(14) + SMA(20) proxy |
 | `Indicators/MomentumCandle_Visualizer.mq5` | Visual aid — draws baseline + threshold whiskers per bar, top-left HUD with PASS/FAIL on each filter |
