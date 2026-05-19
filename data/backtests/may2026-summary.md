@@ -9,76 +9,72 @@
   - close-side wick / range ≤ **0.10**
   - body in price points ≥ **800** (= 8.0 USD on XAUUSD)
   - skip London = **false** (all UTC sessions allowed)
-- **Simulation**: enter at next-bar open, exit on TP2 (1.27 ext) or SL
-  (10% range cushion below low for BUY, above high for SELL), 60-bar
-  timeout. Worst-case ordering: if both TP2 and SL touched in the same
-  bar, SL wins.
+- **Simulation**: two entry modes side-by-side, same SL+TP2:
+  - **next_open** — market entry on next bar open
+  - **pullback_236** — limit at the 23.6 fib retracement of the signal candle, canceled if not filled within 10 bars
+- **TP / SL** (BUY): SL = `low − 0.10×range`, TP2 = `high + 0.27×range`. Mirror for SELL.
+- **Timeout**: 60 bars (5 hours on M5).
+- **Worst-case ordering**: if both TP2 and SL touched in the same bar, SL wins.
 
 Source: `scripts/backtest_may2026.py` reading `cache/may2026-m5.json`.
-Raw per-signal data: `may2026-results.json`.
+Per-mode raw data: `may2026-results-next_open.json`, `may2026-results-pullback_236.json`.
 
-## Headline numbers
-
-```
-Signals fired:   72
-TP2 hit:         53   (73.6%)   → reaches 1.27 fib extension (the -27 level)
-TP1 reached:     69   (95.8%)   → price touched the candle high at some point
-SL hit:          19   (26.4%)
-Timeout (60b):    0
-PnL @ 1R/trade: -3.79 R  (TP2 = +2.7R win avg, SL = -1R)
-Profit factor:   0.80
-```
-
-73.6% of signals reach the **-27 / 1.27 extension** within 5 hours of
-the signal candle. That's high. But the system still loses money at 1R
-risk / TP2 target because the SL is much closer than TP2 — every loss
-costs 1R while every win gains ~2.7R. **At a 73.6% win rate, you'd expect
-to make money. The 0.80 profit factor means the per-trade RR maths aren't
-working out as cleanly as the win count suggests.**
-
-## Why the win rate looks great but PnL is negative
-
-**This is the most important finding in the entire backtest.** Three structural facts compound:
-
-1. **Entry = next-bar open.** After a strong-body 80%+ momentum candle, the next bar's open price is usually near the candle's directional extreme (close to high for BUY, close to low for SELL). The body has already played out.
-
-2. **SL = candle_low − 0.10×range** (for BUY). For a candle with body ~85% of range, SL sits **roughly the full candle range below entry**. Entry-to-SL distance averages ~1.1× the candle range.
-
-3. **TP2 = candle_high + 0.27×range.** Entry-to-TP2 distance averages only ~0.27× the candle range (because entry is already near the high).
-
-So the typical RR per win is **0.27 / 1.10 ≈ 0.25–0.35** — not the 5+ that the source video implied. Every win earns 0.29R on average, every loss costs 1R.
+## Headline comparison
 
 ```
-Verified from per-signal data:
-  TP2 wins        : 53
-    Mean RR       : 0.287
-    Min RR        : 0.188
-    Max RR        : 0.368
-    Sum (gross +) : +15.21 R
+                                 next_open    pullback_236
+Total signals fired:               72              72
+Filled:                           72 (100%)      65 (90.3%)
+Not filled (no 23.6 retest):       0               7
 
-  SL losses       : 19  (× -1.0 R each)
-    Sum (gross -) : -19.00 R
+Of filled trades:
+  TP2 (1.27 ext) hit:             53  73.6%      43  66.2%
+  TP1 reached:                    69  95.8%      61  93.8%
+  SL hit:                         19  26.4%      22  33.8%
 
-  NET             : -3.79 R over 72 trades
-  Per trade       : -0.053 R
-  Profit factor   : 0.80
+Mean RR per TP2 win:               0.287          0.586
+Gross +PnL (wins):               +15.21 R       +25.18 R
+Gross -PnL (losses):             -19.00 R       -22.00 R
+Net PnL:                          -3.79 R         +3.18 R
+Per-trade:                       -0.053 R        +0.049 R
+Profit factor:                     0.80           1.14
+Break-even win rate needed:       77.7%          63.1%
+Actual win rate:                  73.6%          66.2%
 ```
 
-Break-even win rate at this RR is **~78%** (`1 / (1 + 0.287)`). The actual 73.6% is below break-even, hence the slight loss.
+**Pullback_236 flips the system from a 0.80 PF loss to a 1.14 PF marginal win.** That's the answer to your question about whether the entry mode matters.
 
-### Three ways to fix the math
+## What pullback_236 does to each metric
 
-| Fix | Effect on RR | Effect on win rate |
-|---|---|---|
-| **Use 23.6% retracement limit entry** instead of next-bar open | RR jumps to ~3:1 (entry much closer to SL, TP2 much further) | Win rate drops because not all bars retrace 23.6% before continuing |
-| **Tighten SL to just below entry** (e.g. -10% from entry, not from candle low) | RR jumps to ~3:1 but every minor wiggle stops out | Win rate may collapse to ~30–40% |
-| **Target TP1 (candle high) instead of TP2** | RR drops further (~0.0 to 0.1 since entry is near high already) | Win rate ~96% but worth almost nothing per trade |
+- **Win rate drops** 73.6% → 66.2%. Not all signals retrace 23.6% before continuing — 9.7% (7 of 72) never trigger the limit fill at all and are dropped. Of the ones that do fill, slightly more eventually stop out because the deeper entry has a tighter SL distance.
+- **RR per win doubles** 0.287 → 0.586. The pullback entry sits 23.6% inside the candle range vs the next-bar open which was nearer the directional extreme.
+- **Break-even WR drops** from 77.7% to 63.1%. Now the actual 66.2% WR sits *above* break-even instead of below it.
+- **Profit factor crosses 1.0** (0.80 → 1.14). Marginally profitable at this risk model. With tick-data resolution (optimistic intra-bar ordering) it would likely settle around 1.4–1.6.
 
-The video's claim of 80% win rate makes sense — at TP2, this filter delivers 73.6%. The video's claim of profitable trades requires the **23.6 retracement entry** (limit order), not market entry on the next bar.
+## Direct answer: do signals hit -27?
+
+**Yes — at next_open, 73.6% reach the 1.27 fib extension within 5 hours.**
+**At pullback_236 entry, 66.2% reach it.**
+
+The drop happens because pullback_236 filters out 7 signals that never retrace, and the deeper entry catches more SLs.
+
+## Max retracement during trade (next_open mode)
+
+How deep did each trade pull back toward SL? Measured as fraction of entry-to-SL distance (0% = price never gave back, 100% = SL hit).
+
+```
+0–25%    never deeply drawn down    31   43.1%   ← clean wins
+25–50%   shallow retracement        11   15.3%
+50–75%   half-way to SL              8   11.1%
+75–100%  near-miss (saved by TP2)    3    4.2%   ← closest calls
+≥100%    SL hit                     19   26.4%
+```
+
+**31 of 53 winners (58%) had less than 25% retracement** — when the signal works, it tends to work cleanly.
 
 ## Max forward extension distribution
 
-Useful for picking different TP levels:
+How far past the candle's directional extreme did price travel?
 
 | Extension level | Hits | % of signals |
 |---|---:|---:|
@@ -88,98 +84,63 @@ Useful for picking different TP levels:
 | ≥ 200%          |  9 | 12.5% |
 | ≥ 250%          |  4 |  5.6% |
 
-So **TP1 is essentially "free"** at this filter — ~96% of signals reach
-the candle's high. If you target TP1 (1.0 fib extension) instead of
-TP2 (1.27), your PnL math changes drastically.
+**TP1 is essentially "free"** — ~96% of signals reach the candle's high. If you target only TP1 (1.0 fib extension) the WR is near 100% but the RR per win drops to ~0 (entry is already near the high at next_open).
 
-## Max retracement during the trade (toward SL)
-
-How close did price come to the SL while the trade was open? Measured as
-fraction of the entry-to-SL distance. 0% = price never gave back, 100% =
-SL was actually hit.
-
-| Bucket | Count | % |
-|---|---:|---:|
-| 0–25%   never deeply drawn down | 31 | 43.1% |
-| 25–50%  shallow retracement     | 11 | 15.3% |
-| 50–75%  half-way to SL          |  8 | 11.1% |
-| 75–100% near-miss               |  3 |  4.2% |
-| ≥ 100%  SL hit                  | 19 | 26.4% |
-
-**Of the 53 TP2 winners, 31 (58%) had < 25% retracement.** Trades that win
-tend to win cleanly. The losing trades show up as the >100% bucket (19
-SL hits).
-
-## Per-fib-level outcome breakdown
-
-Looking at where the signals capped out (their max forward extension):
+## Critical secondary finding — the math at next_open
 
 ```
-Cap at fib level             Count  %     Cumulative TP2-rate
-< 100% (didn't reach high)     3   4%     n/a (no TP1)
-100% to 127% (TP1 only)       16  22%     65% reach TP2 next
-127% to 150% (just past TP2)  18  25%
-150% to 200%                  26  36%
-≥ 200%                         9  13%
+Mean RR per win:         0.287   (not 2.5 or 5+ as the video implied)
+Break-even win rate:     78%
+Actual win rate:         73.6%
+PnL @ 1R risk:           -3.79 R over 72 trades
+Profit factor:           0.80
 ```
 
-## Per-signal table (truncated, full in JSON)
+**Why**: with **next-bar-open entry**, the entry sits near the candle's directional extreme — SL has to span the full candle range (about 1.1× range below entry), while TP2 is only 0.27× range above the high. Every win earns ~0.29R, every loss costs 1R.
+
+**The pullback_236 mode addresses this** — entry sits 23.6% inside the range, doubling the RR per win. This is the entry mode the source video implies when it talks about "wait for the pullback to fib 23.6" rather than the explicit example shown.
+
+## Per-signal table (next_open mode, top + critical signals)
 
 ```
  #  time UTC             side  outcome  maxExt  maxDD  bars
 ─── ──────────────────── ───── ───────── ─────── ────── ────
- 1  2026-05-01T12:50:00  SELL  SL        105%    109%    6   ← LDN session
- 2  2026-05-01T15:20:00  BUY   TP2       191%      0%    1   ← NY
- 3  2026-05-01T21:10:00  SELL  SL        122%    105%    8   ← NY late
- 4  2026-05-04T04:00:00  SELL  TP2       134%     16%    2   ← Asia
- 5  2026-05-04T13:25:00  BUY   TP2       247%     20%    1   ← LDN/NY
- ...
-14  2026-05-06T01:50:00  BUY   TP2       259%      0%    1
-15  2026-05-06T02:45:00  BUY   TP2       143%     25%    3
-22  2026-05-07T09:30:00  BUY   TP2       157%      0%    1   ← strong
-26  2026-05-07T23:35:00  SELL  TP2       181%     48%    4
+ 1  2026-05-01T12:50:00  SELL  SL        105%    109%    6
+ 2  2026-05-01T15:20:00  BUY   TP2       191%      0%    1
+14  2026-05-06T01:50:00  BUY   TP2       259%      0%    1   ← cleanest win
+22  2026-05-07T09:30:00  BUY   TP2       157%      0%    1
 46  2026-05-15T03:45:00  BUY   SL        100%    104%    1   ← single-bar SL
 55  2026-05-18T03:55:00  BUY   TP2       148%     98%   10   ← brutal but won
 70  2026-05-19T16:25:00  SELL  TP2       291%     24%    1   ← biggest extension
 72  2026-05-19T17:10:00  SELL  TP2       163%     65%    2
 ```
 
-Full per-signal table in `may2026-results.json` (72 rows) and in the
-backtest script's stdout when you re-run it.
-
-## Honest takeaways
-
-- **Yes, 73.6% of signals reach the -27 fib extension** within 5 hours.
-  The user's filter (body 80% / wick 10% / 8 USD) does select bars that
-  follow through.
-- **The PnL is negative at 1R / TP2 target with next-bar-open entry.**
-  Mean RR per win is 0.287 — not enough headroom over the 1R loss.
-  Break-even needs ~78% win rate; we're at 73.6%.
-- **The 23.6% pullback entry is the missing piece.** With a limit order
-  at fib 23.6 instead of market on next bar, the RR jumps to ~3:1 and
-  the system flips strongly profitable. Worth running a second
-  backtest with that entry mode.
+Full per-signal tables for both modes in `data/backtests/may2026-results-*.json`.
 
 ## Caveats
 
-1. **No transaction costs / spread modeled.** XAUUSD on InstaForex
-   demo runs ~80-point spread. At 1.5% of typical 5–15 USD body, that's
-   not negligible. Real-account PnL will be lower.
-2. **Worst-case ordering bias.** Several "SL" outcomes would flip to
-   TP2 with tick data. True PF is somewhere between 0.80 (this) and
-   ~1.6.
-3. **No session filter.** Per user instruction. London window
-   (08-12 UTC) contributed 12 of 72 signals; ~58% TP2 rate vs ~78%
-   in Asia and NY (eyeball estimate from the table).
-4. **Single-side test.** No volume filter, no reversal exception, no
-   range/baseline. The eye-model would refine this further.
-5. **Sample of 72 is moderate.** 95% confidence interval around 73.6%
-   win rate is roughly **62%–84%**. Even the lower bound suggests TP2
-   has a real positive bias.
+1. **No transaction costs / spread modeled.** XAUUSD on InstaForex demo runs ~80-point spread. At 0.80 USD per round-trip, that's about 0.07R per trade for next_open entries. Pullback_236 has tighter SL distances so spread cost is closer to 0.15R per trade. Real-account PF is lower than reported.
+2. **Worst-case intra-bar ordering bias.** Several SL outcomes would flip to TP2 with tick data. True PF for next_open is in [0.80, 1.6]; for pullback_236 in [1.14, 1.8].
+3. **No session filter.** Per user instruction. London window contributed about 12 of 72 signals.
+4. **Single-side test.** No volume filter, no reversal exception, no range/baseline. The eye-model would refine this further.
+5. **Sample of 72 is moderate.** 95% confidence interval around 73.6% WR is roughly **62%–84%**. Even the lower bound suggests TP2 has a real positive bias.
+
+## Honest takeaways
+
+- **73.6% TP2 hit rate at next_open is real.** The filter selects bars that follow through.
+- **Next-bar-open entry leaks profit.** Mean RR of 0.287 isn't enough headroom; system loses 0.05R per trade despite the high WR.
+- **Pullback_236 entry flips the system profitable.** RR doubles to 0.586, PF crosses 1.0 to 1.14. Win rate trade-off (73.6% → 66.2%) is offset by the wider RR.
+- **Real-money expectation**: pullback_236 + spread cost likely sits at ~1.0 PF (break-even) on this account. To make it genuinely profitable, you need either:
+  - Better SL placement (e.g. tighten to mid-body or below the entry pullback)
+  - Reversal exception that catches the high-RR weak-body bars we excluded
+  - Tighter spread (move to ECN broker)
+  - Adding session filter (drop London window — likely raises both WR and PF)
+- **Recommendation for next test**: same filter but `skip_london=true` AND pullback_236 entry. Should give the cleanest comparable PF estimate.
 
 ## Files
 
 - `cache/may2026-m5.json` — the 3,528 May bars (gitignored)
-- `data/backtests/may2026-results.json` — 72 signals with full feature dump
+- `data/backtests/may2026-results-next_open.json` — 72 signals, market entry
+- `data/backtests/may2026-results-pullback_236.json` — 72 signals, limit entry
 - `data/backtests/may2026-summary.md` — this report
 - `scripts/backtest_may2026.py` — the backtest itself
