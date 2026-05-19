@@ -5,10 +5,14 @@
 //+------------------------------------------------------------------+
 //| The simplest possible momentum-candle indicator.                 |
 //|                                                                  |
-//| Three filters only:                                              |
+//| Three filters + an optional session window:                      |
 //|   1. body / range          >= InpMinBodyPct                      |
 //|   2. close-side wick / range <= InpMaxCloseWickPct               |
 //|   3. body in absolute price points >= InpMinBodyPoints           |
+//|   4. (optional) bar's open time-of-day in UTC must fall within   |
+//|      Asia 23-08 UTC OR NY 12-22 UTC -- skips the 08-12 UTC       |
+//|      London chop window where the eye-tag data showed the weakest|
+//|      momentum-candle signal.                                     |
 //|                                                                  |
 //| No range/volume/ATR/baseline. No pattern classification.         |
 //| No fib levels. Just a green up-arrow on BUY momentum and a red   |
@@ -40,6 +44,11 @@
 input double InpMinBodyPct       = 0.70;   // Min body / range
 input double InpMaxCloseWickPct  = 0.10;   // Max close-side wick / range
 input double InpMinBodyPoints    = 8.0;    // Min body in price points (absolute floor)
+input bool   InpUseSessionFilter = true;   // Skip London chop window
+input int    InpAsiaStartHourUTC = 23;     // Asia session start hour (UTC, inclusive)
+input int    InpAsiaEndHourUTC   = 8;      // Asia session end hour (UTC, exclusive)
+input int    InpNYStartHourUTC   = 12;     // NY session start hour (UTC, inclusive)
+input int    InpNYEndHourUTC     = 22;     // NY session end hour (UTC, exclusive)
 input bool   InpAlertOnNew       = false;  // Pop terminal alert on new setup
 
 //--- buffers -------------------------------------------------------
@@ -61,10 +70,11 @@ int OnInit()
    PlotIndexSetDouble(1, PLOT_EMPTY_VALUE, EMPTY_VALUE);
 
    IndicatorSetString(INDICATOR_SHORTNAME,
-                      StringFormat("MomentumCandle Simple (body>=%.0f%%, wick<=%.0f%%, body>=%.1fpt)",
+                      StringFormat("MomentumCandle Simple (body>=%.0f%%, wick<=%.0f%%, body>=%.1fpt%s)",
                                    InpMinBodyPct * 100.0,
                                    InpMaxCloseWickPct * 100.0,
-                                   InpMinBodyPoints));
+                                   InpMinBodyPoints,
+                                   InpUseSessionFilter ? ", sess A+NY" : ""));
 
    ArraySetAsSeries(BufBuy,  true);
    ArraySetAsSeries(BufSell, true);
@@ -104,6 +114,41 @@ int OnCalculate(const int rates_total,
   }
 
 //+------------------------------------------------------------------+
+//| InActiveSession — true if `t` (the bar's open time, server time) |
+//| falls inside Asia or NY session windows in UTC. Both windows are |
+//| half-open [start, end). Asia wraps midnight (default 23-08 UTC). |
+//| Server time is converted to UTC via TimeGMT() / TimeCurrent()    |
+//| offset on the live tick.                                          |
+//+------------------------------------------------------------------+
+bool InActiveSession(const datetime t)
+  {
+   // Server-to-UTC offset. Computed each call so seasonal DST shifts
+   // are absorbed automatically.
+   const long offset = (long)TimeGMT() - (long)TimeCurrent();
+   const datetime t_utc = (datetime)((long)t + offset);
+
+   MqlDateTime dt;
+   TimeToStruct(t_utc, dt);
+   const int h = dt.hour;
+
+   // Asia: wraps midnight. Default 23 -> 8 means 23,0,1,2,3,4,5,6,7.
+   bool in_asia;
+   if(InpAsiaStartHourUTC <= InpAsiaEndHourUTC)
+      in_asia = (h >= InpAsiaStartHourUTC && h < InpAsiaEndHourUTC);
+   else
+      in_asia = (h >= InpAsiaStartHourUTC || h < InpAsiaEndHourUTC);
+
+   // NY: same scheme, but defaults are 12-22 (no wrap).
+   bool in_ny;
+   if(InpNYStartHourUTC <= InpNYEndHourUTC)
+      in_ny = (h >= InpNYStartHourUTC && h < InpNYEndHourUTC);
+   else
+      in_ny = (h >= InpNYStartHourUTC || h < InpNYEndHourUTC);
+
+   return (in_asia || in_ny);
+  }
+
+//+------------------------------------------------------------------+
 //| EvaluateBar — apply three filters at `shift`.                    |
 //+------------------------------------------------------------------+
 void EvaluateBar(const int shift,
@@ -115,6 +160,9 @@ void EvaluateBar(const int shift,
   {
    BufBuy[shift]  = EMPTY_VALUE;
    BufSell[shift] = EMPTY_VALUE;
+
+   //--- session filter (UTC time-of-day on the bar's open) ---------
+   if(InpUseSessionFilter && !InActiveSession(time[shift])) return;
 
    const double o   = open[shift];
    const double h   = high[shift];
