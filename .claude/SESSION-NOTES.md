@@ -1,115 +1,101 @@
 # Session notes — momentum-candle project
 
-Living checkpoint. Updated whenever a decision is made or a phase ships.
-Read this at the start of any new session before deriving anything from scratch.
+Living checkpoint. Read this at the start of any new session before deriving
+anything from scratch.
 
-## Current state — 2026-05-18
+## Current state — 2026-05-19 (DATASET WRAPPED)
 
 ### Tags & versions on origin/main
 
 - `v0.2.0-python-mvp` — Python MCP MVP (8 tools, 16 tests passing)
 - `bb8eee5` — MQL5 indicators compile clean (Video + Proxy + Backtest EA)
 - `53c3786` — MomentumCandle_Visualizer indicator + docs
+- `868dd23` — five eye-tag worksheets generated (250 candidates)
+- `f16e421` — opencode auto-load + STATUS.md tracker
+- `7d07c0b` — Fri 2026-05-15 tagged (6 YES / 44 NO)
+- `73e552c` — Thu 2026-05-14 tagged (2 YES / 48 NO) — reversal exception confirmed
+- `130b144` — Mon 2026-05-18 tagged (8 YES / 42 NO) — model converged
 
-### Live evidence collected
+### Dataset wrap
 
-1. **Live MT5 connection working** via opencode `.mcp.json`
-   - InstaForex demo `94682256`, server `InstaForex-Server`, USD, leverage 1:1000
-   - Filling mode auto-detect resolves to FOK on this account
-2. **Eye-vs-algo walkthrough** of today's M5 (12 candidates examined)
-   - 4 disagreements out of 12 (33%)
-   - 2 misses by absolute size floor (algo too loose on small marubozu)
-   - 1 miss by volume threshold (B: snap-back)
-   - 1 miss by reversal context (I/V: 67% body, 25% wick — algo too strict)
+3 of 5 days tagged. Tue 12 + Wed 13 deferred. Model deemed sufficient on
+**16 YES / 134 NO** to encode into indicators.
 
-Strategy-tester results explicitly out of scope per user direction. Focus
-is the candle-classification function itself.
+| Day | Range pts | YES | Notes |
+|---|---:|---:|---|
+| Thu 2026-05-14 | 74 | 2 | both Asian-session reversals (weak-body type) |
+| Fri 2026-05-15 | 154 | 6 | 3 Asia, 1 London, 2 NY; 3 breakouts, 2 reversals, 1 cont |
+| Mon 2026-05-18 | 104 | 8 | richest day; collapse + NY rally; first non-size NO |
 
-### Eye-model — extracted rules
+### Final eye-model (after 3 days of empirical tagging)
 
-User's mental classification function decomposes into 4 orthogonal rules:
+```python
+def is_momentum_candle(bar, prior_bars):
+    # Hard size floor — calibrated empirically on M5 XAUUSD
+    if bar.range < 10.0:
+        return False
 
-1. **Geometric purity** — body ≥ 70%, close-side wick ≤ 10%
-   - Reversal exception: body ≥ 60%, wick ≤ 25%
-2. **Absolute size floor** — M5 XAUUSD: ≥ 20 pts (calibrated from today)
-3. **Dominance / "left side empty"** — range > max(prior N same-direction ranges)
-4. **Session filter** — Asia 23:00–08:00 UTC, NY 12:00–22:00 UTC; skip London chop
+    # Off-window reject (only safely droppable hour: 22-23 UTC)
+    if 22 <= bar.utc_hour < 23:
+        return False
 
-### Rules locked
+    if has_reversal_context(bar, prior_bars):
+        # Hammer / shooting-star or strong-body reversal
+        return bar.body_pct >= 0.50 and bar.wick_pct <= 0.37
+    else:
+        # Continuation / breakout
+        return bar.body_pct >= 0.75 and bar.wick_pct <= 0.15
+        # User addition 2026-05-19: also enforce far-side (away) wick <= 5%
+        # — applies to ALL three indicators via InpMaxFarWickPct=0.05.
 
-- Session window: Asia 23-08 UTC + NY 12-22 UTC
-- Absolute size floor (M5 XAUUSD): 20 pts default, calibrate later
-- Dominance check: range > max(prior 5 same-direction ranges)
-- Volume filter: deprioritized (false rejects on Bars B, J)
-- 30-min hard time-stop: applied in EA + Python `place_market_order`
+def has_reversal_context(bar, prior_bars):
+    return engulfs_prior_bar(bar, prior_bars[-1]) \
+        or near_swing_extreme(bar, prior_bars[-20:])
+```
 
-### Pending — needs more evidence
+This model passes ALL 16 YES and rejects ALL 134 NO across the 3 tagged
+days. It's the encoded expression of the user's eye.
 
-- Reversal-context detection: 4 hypotheses to test
-  - **A** Pause-and-reject: bars within 0.6×ATR of swing high/low for 3+ bars
-  - **B** Round-number rejection: distance to nearest 50 or 100 ≤ 5 pts
-  - **C** Engulfing: open ≥ prior.close AND close < prior.low (SELL); mirror BUY
-  - **D** Velocity-flip: rate_recent sign != rate_now sign AND |rate_now| ≥ 2 × |rate_recent|
-- Best M5 size floor (20pt is hypothesis, needs cross-day validation)
-- Per-timeframe floor (M15, H1) — untested
+### What was dropped from the original 4-rule hypothesis
 
-### 5-day candle dataset cached
+| Original idea | Verdict |
+|---|---|
+| 20-pt absolute size floor | DROPPED → 10 pts (with reversal context) |
+| Volume V5 ≥ 1.5× | DROPPED — V5 mean YES 1.27× vs NO 1.16× (no signal) |
+| Round-number proximity (R) | DROPPED — negative correlation |
+| Velocity-flip (V) | DROPPED — negative correlation (1.7× more in NO) |
+| Consolidation tag (C) | DROPPED — weak negative |
+| Swing-extreme (S) | MARGINAL — kept inside reversal_context |
+| Engulfing (E) | KEPT — primary reversal context signal |
+| Trend-monotonic (T) | KEPT — 1.6× lift, primary continuation context |
+| Session filter | RELAXED — only 22-23 UTC is hard reject |
 
-- Source: `C:\Users\DELL\.local\share\opencode\tool-output\tool_e3c60fb800018NefI01GMfrDQg`
-- 1500 M5 bars total
-- Days covered:
-  - Tue 2026-05-12  276 bars  range 135 pts (volatile)
-  - Wed 2026-05-13  276 bars  range  57 pts (quiet)
-  - Thu 2026-05-14  276 bars  range  74 pts (normal)
-  - Fri 2026-05-15  276 bars  range 154 pts (volatile, top priority)
-  - Mon 2026-05-18  248 bars  range 104 pts (today, partial)
-- Eye-tagging order: **Fri 15 → Tue 12 → Mon 18 → Thu 14 → Wed 13**
-- Density: top 50 candidates per day by composite score
-- Eye-tag format: `<n> YES <pattern>` or `<n> NO <reason>`
-  - Patterns: continuation, breakout, reversal
-  - Bars not mentioned = skipped (not eye-flagged)
+### New input across all three indicators (2026-05-19)
+
+`InpMaxFarWickPct = 0.05` — far-side (away) wick must be ≤ 5% of range, in
+addition to existing close-side wick filter. User feedback: "wick should be
+below 5%, both lower or higher". Applied to MomentumCandle_Video, _Proxy,
+_Visualizer (the visualizer's HUD shows pass/fail on this too).
 
 ### Stats from current algo against the dataset
 
-- 1,352 total bars across 5 days
-- 508 candidates (body≥0.65 OR R5≥1.4 OR range≥18)
-- Only 5 (0.37%) pass all 4 algo filters
-- Only 5 pass the proposed 20-pt size floor
-- Algo-pass and size-floor overlap on **just 1 bar** in 5 days (Fri 02:30 SELL)
-  → Major eye-vs-algo gap: algo flags small marubozus, misses 20+pt bars on geometry
-
-### Two-phase plan
-
-```
-Phase A — Eye-aligned momentum core (HOLD until eye-tag dataset complete)
-  1. Add session filter to MQL5 + Python
-  2. Add absolute size floor to MQL5 + Python
-  3. Add dominance check (max prior N same-dir range) to MQL5 + Python
-  4. Add 30-min hard time-stop to EA + Python place_market_order
-  → Bump v0.3.0-eye-aligned
-
-Phase B — Reversal exception (after Phase A + eye-tag dataset analysis)
-  1. Compute correlation of 4 hypotheses against eye-tags
-  2. Pick smallest set that explains ≥80% of YES with ≤10% false positives
-  3. Encode reversal-context detector with body ≥ 60%, wick ≤ 25% relaxation
-  → Bump v0.4.0-reversal
-
-Strategy-tester optimizer phase explicitly DROPPED per user direction.
-```
+- 1,352 total bars across 5 days (3 tagged)
+- 250 candidates examined (top-50 per day × 5 days)
+- 16 YES, 134 NO from user
+- Original algo (body≥70 + wick≤10 + R5≥1.5 + V5≥1.5): only 5 of 1,352 pass
+  → eye-vs-algo overlap was just 1 bar across 3 days
 
 ## Workflow rules
 
-- **Hold all code changes** until eye-tag dataset across 5 days is collected and analyzed.
 - **uv path on Windows:**
   `C:\Users\DELL\AppData\Local\Microsoft\WinGet\Packages\astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe\uv.exe`
 - **MetaEditor compile path:** `C:\Program Files\MetaTrader\MetaEditor64.exe`
 - **MT5 terminal path:** `C:\Program Files\MetaTrader\terminal64.exe`
 - **MT5 data folder:**
   `C:\Users\DELL\AppData\Roaming\MetaQuotes\Terminal\F762D69EEEA9B4430D7F17C82167C844`
+- **5-day cache:** `C:\Users\DELL\.local\share\opencode\tool-output\tool_e3c60fb800018NefI01GMfrDQg`
 
-## Composite score formula
-
-Used to rank "interesting" candidates per day:
+## Composite score formula (used in worksheets)
 
 ```
 score = body_pct * 0.4
@@ -118,13 +104,20 @@ score = body_pct * 0.4
       + min(range/30, 1.0) * 0.1
 ```
 
-R5 = range / mean(prior 5 ranges).  V5 = tick_volume / mean(prior 5 tick_volumes).
-
 ## Resume point
 
-**Next step on `continue`:** deliver Fri 2026-05-15 candidate table for eye-tagging,
-top 50 by composite score, both UTC and broker (UTC+2) timestamps. User replies with
-`<n> YES <pattern>` per bar.
+**Dataset wrapped.** Next focus is whichever the user picks:
 
-After all 5 days tagged: build correlation table, run hypothesis selection,
-propose Phase A+B encoding.
+1. **Encode the eye-model into MQL5/Python** — bump to `v0.3.0-eye-aligned`.
+   Translate the final model above into MomentumCandle_Eye.mq5 +
+   `mt5_mvp.strategies.eye_model.py`. Side-by-side with Video and Proxy.
+
+2. **Continue eye-tagging Tue 12 + Wed 13** — adds Tue (high-vol) and Wed
+   (quiet day, false-positive control). Strengthens model statistics from
+   16 YES to ~25 YES.
+
+3. **Apply far-wick filter live** — already done 2026-05-19 across the
+   three indicators (Video, Proxy, Visualizer). Recompile next time MT5
+   refreshes.
+
+User indicated the dataset is "enough" — option 1 is the natural next step.

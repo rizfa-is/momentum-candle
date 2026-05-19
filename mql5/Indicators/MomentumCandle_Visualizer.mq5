@@ -55,6 +55,7 @@
 //--- inputs --------------------------------------------------------
 input double InpMinBodyPct      = 0.70;   // Min body / range
 input double InpMaxCloseWickPct = 0.10;   // Max close-side wick / range
+input double InpMaxFarWickPct   = 0.05;   // Max far-side (opposite) wick / range
 input int    InpLocalLookback   = 5;      // Bars used for local mean baseline
 input double InpRangeMult       = 1.5;    // Min range / local mean range
 input double InpVolMult          = 1.5;   // Min tick_volume / local mean volume
@@ -179,6 +180,8 @@ void EvaluateBar(const int shift,
    const bool   is_bull  = (c > o);
    const double close_wick = is_bull ? (h - c) : (c - lo);
    const double close_wick_pct = close_wick / rng;
+   const double far_wick = is_bull ? (o - lo) : (h - o);
+   const double far_wick_pct = far_wick / rng;
 
    const double mean_range = MC_LocalMeanRange(shift, InpLocalLookback, high, low);
    if(mean_range <= 0.0) return;
@@ -189,11 +192,13 @@ void EvaluateBar(const int shift,
    const double vol_ratio = (double)tick_volume[shift] / mean_vol;
 
    //--- per-filter pass flags --------------------------------------
-   const bool pass_body  = (body_pct       >= InpMinBodyPct);
-   const bool pass_wick  = (close_wick_pct <= InpMaxCloseWickPct);
-   const bool pass_range = (range_ratio    >= InpRangeMult);
-   const bool pass_vol   = (vol_ratio      >= InpVolMult);
+   const bool pass_body     = (body_pct       >= InpMinBodyPct);
+   const bool pass_wick     = (close_wick_pct <= InpMaxCloseWickPct);
+   const bool pass_far_wick = (far_wick_pct   <= InpMaxFarWickPct);
+   const bool pass_range    = (range_ratio    >= InpRangeMult);
+   const bool pass_vol      = (vol_ratio      >= InpVolMult);
    const int  pass_count = (pass_body ? 1 : 0) + (pass_wick ? 1 : 0)
+                         + (pass_far_wick ? 1 : 0)
                          + (pass_range ? 1 : 0) + (pass_vol ? 1 : 0);
 
    //--- whisker geometry ------------------------------------------
@@ -214,20 +219,24 @@ void EvaluateBar(const int shift,
    //  0 = LIME  : passes ALL four filters
    //  1 = GOLD  : 3 of 4 pass (borderline — visually a momentum)
    //  2 = CRIMSON: range filter itself failed (or 2 or fewer pass)
-   if(pass_count == 4)        BufThreshColor[shift] = 0.0;
-   else if(pass_count == 3)   BufThreshColor[shift] = 1.0;
+   //--- threshold whisker color updated for 5-filter scoring --------
+   //  0 = LIME    : passes ALL 5 filters
+   //  1 = GOLD    : 4 of 5 (borderline)
+   //  2 = CRIMSON : 3 or fewer pass
+   if(pass_count == 5)        BufThreshColor[shift] = 0.0;
+   else if(pass_count == 4)   BufThreshColor[shift] = 1.0;
    else                       BufThreshColor[shift] = 2.0;
 
    //--- per-bar text labels --------------------------------------
-   if(InpShowBarLabels && pass_count >= 3)
+   if(InpShowBarLabels && pass_count >= 4)
       DrawBarLabel(shift, time[shift], h, lo,
-                   body_pct, close_wick_pct, range_ratio, vol_ratio,
-                   pass_body, pass_wick, pass_range, pass_vol);
+                   body_pct, close_wick_pct, far_wick_pct, range_ratio, vol_ratio,
+                   pass_body, pass_wick, pass_far_wick, pass_range, pass_vol);
   }
 
 //+------------------------------------------------------------------+
 //| DrawBarLabel — small text annotation above (or below) the bar.   |
-//| Only draws for "interesting" bars (3+ filters pass) so the chart |
+//| Only draws for "interesting" bars (4+ filters pass) so the chart |
 //| isn't littered with text on every candle.                        |
 //+------------------------------------------------------------------+
 void DrawBarLabel(const int shift,
@@ -235,24 +244,29 @@ void DrawBarLabel(const int shift,
                   const double h,
                   const double lo,
                   const double body_pct,
-                  const double wick_pct,
+                  const double close_wick_pct,
+                  const double far_wick_pct,
                   const double range_ratio,
                   const double vol_ratio,
                   const bool pass_body,
-                  const bool pass_wick,
+                  const bool pass_close_wick,
+                  const bool pass_far_wick,
                   const bool pass_range,
                   const bool pass_vol)
   {
    const string id = StringFormat("%sB%I64d", InpObjectPrefix, (long)t);
 
    string flags = "";
-   flags += (pass_body  ? "B" : "b");
-   flags += (pass_wick  ? "W" : "w");
-   flags += (pass_range ? "R" : "r");
-   flags += (pass_vol   ? "V" : "v");
+   flags += (pass_body       ? "B" : "b");
+   flags += (pass_close_wick ? "W" : "w");
+   flags += (pass_far_wick   ? "F" : "f");
+   flags += (pass_range      ? "R" : "r");
+   flags += (pass_vol        ? "V" : "v");
 
-   const string txt = StringFormat("%s %.0f%% %.1fxR %.1fxV",
-                                   flags, body_pct * 100.0, range_ratio, vol_ratio);
+   const string txt = StringFormat("%s %.0f%% cw=%.0f%% fw=%.0f%% %.1fxR %.1fxV",
+                                   flags, body_pct * 100.0,
+                                   close_wick_pct * 100.0, far_wick_pct * 100.0,
+                                   range_ratio, vol_ratio);
 
    const double price = h + (h - lo) * 0.30;
 
@@ -264,9 +278,10 @@ void DrawBarLabel(const int shift,
       ObjectSetDouble (0, id, OBJPROP_PRICE, 0, price);
      }
 
-   const int passes = (pass_body ? 1 : 0) + (pass_wick ? 1 : 0)
+   const int passes = (pass_body ? 1 : 0) + (pass_close_wick ? 1 : 0)
+                    + (pass_far_wick ? 1 : 0)
                     + (pass_range ? 1 : 0) + (pass_vol ? 1 : 0);
-   const color clr = (passes == 4) ? clrLime : (passes == 3) ? clrGold : clrSilver;
+   const color clr = (passes == 5) ? clrLime : (passes == 4) ? clrGold : clrSilver;
 
    ObjectSetString (0, id, OBJPROP_TEXT, txt);
    ObjectSetInteger(0, id, OBJPROP_COLOR, clr);
@@ -328,47 +343,55 @@ void UpdateHUD(const datetime &time[],
    const bool   is_bull      = (c > o);
    const string side         = is_bull ? "BULL" : "BEAR";
    const double close_wick   = is_bull ? (h - c) : (c - lo);
-   const double wick_pct     = close_wick / rng;
+   const double cwick_pct    = close_wick / rng;
+   const double far_wick     = is_bull ? (o - lo) : (h - o);
+   const double fwick_pct    = far_wick / rng;
    const double mean_range   = MC_LocalMeanRange(shift, InpLocalLookback, high, low);
    const double range_ratio  = (mean_range > 0.0) ? rng / mean_range : 0.0;
    const double mean_vol     = MC_LocalMeanVolume(shift, InpLocalLookback, tick_volume);
    const double vol_ratio    = (mean_vol > 0.0) ? (double)tick_volume[shift] / mean_vol : 0.0;
 
-   const bool pb = (body_pct      >= InpMinBodyPct);
-   const bool pw = (wick_pct      <= InpMaxCloseWickPct);
-   const bool pr = (range_ratio   >= InpRangeMult);
-   const bool pv = (vol_ratio     >= InpVolMult);
-   const int  pc = (pb ? 1 : 0) + (pw ? 1 : 0) + (pr ? 1 : 0) + (pv ? 1 : 0);
+   const bool pb  = (body_pct      >= InpMinBodyPct);
+   const bool pcw = (cwick_pct     <= InpMaxCloseWickPct);
+   const bool pfw = (fwick_pct     <= InpMaxFarWickPct);
+   const bool pr  = (range_ratio   >= InpRangeMult);
+   const bool pv  = (vol_ratio     >= InpVolMult);
+   const int  pc  = (pb ? 1 : 0) + (pcw ? 1 : 0) + (pfw ? 1 : 0)
+                  + (pr ? 1 : 0) + (pv ? 1 : 0);
 
    string verdict;
-   if(pc == 4)      verdict = "QUALIFIES";
-   else if(pc == 3) verdict = "BORDERLINE (3 of 4)";
-   else             verdict = StringFormat("REJECTED (%d of 4 passed)", pc);
+   if(pc == 5)      verdict = "QUALIFIES";
+   else if(pc == 4) verdict = "BORDERLINE (4 of 5)";
+   else             verdict = StringFormat("REJECTED (%d of 5 passed)", pc);
 
    string fail = "";
-   if(!pb) fail += " body";
-   if(!pw) fail += " wick";
-   if(!pr) fail += " range";
-   if(!pv) fail += " volume";
+   if(!pb)  fail += " body";
+   if(!pcw) fail += " close-wick";
+   if(!pfw) fail += " far-wick";
+   if(!pr)  fail += " range";
+   if(!pv)  fail += " volume";
    if(StringLen(fail) > 0) fail = StringFormat("\n  Failing: %s", fail);
 
    Comment(StringFormat(
       "==== MC Visualizer ====\n"
-      "Inputs: N=%d  body>=%.0f%%  wick<=%.0f%%  range>=%.2fx  vol>=%.2fx\n"
+      "Inputs: N=%d  body>=%.0f%%  cwick<=%.0f%%  fwick<=%.0f%%  range>=%.2fx  vol>=%.2fx\n"
       "\n"
       "Last closed bar (%s):  %s  range=%.2f\n"
-      "  body  = %5.1f%%   %s  (need >= %.0f%%)\n"
-      "  wick  = %5.1f%%   %s  (need <= %.0f%%)\n"
-      "  range = %5.2fx    %s  (need >= %.2fx)\n"
-      "  vol   = %5.2fx    %s  (need >= %.2fx)\n"
+      "  body       = %5.1f%%   %s  (need >= %.0f%%)\n"
+      "  close-wick = %5.1f%%   %s  (need <= %.0f%%)\n"
+      "  far-wick   = %5.1f%%   %s  (need <= %.0f%%)\n"
+      "  range      = %5.2fx    %s  (need >= %.2fx)\n"
+      "  volume     = %5.2fx    %s  (need >= %.2fx)\n"
       "\n"
       "Verdict: %s%s",
       InpLocalLookback,
-      InpMinBodyPct * 100.0, InpMaxCloseWickPct * 100.0, InpRangeMult, InpVolMult,
+      InpMinBodyPct * 100.0, InpMaxCloseWickPct * 100.0, InpMaxFarWickPct * 100.0,
+      InpRangeMult, InpVolMult,
       TimeToString(time[shift], TIME_DATE | TIME_MINUTES), side, rng,
-      body_pct  * 100.0, pb ? "PASS" : "FAIL", InpMinBodyPct      * 100.0,
-      wick_pct  * 100.0, pw ? "PASS" : "FAIL", InpMaxCloseWickPct * 100.0,
-      range_ratio,       pr ? "PASS" : "FAIL", InpRangeMult,
-      vol_ratio,         pv ? "PASS" : "FAIL", InpVolMult,
+      body_pct   * 100.0, pb  ? "PASS" : "FAIL", InpMinBodyPct      * 100.0,
+      cwick_pct  * 100.0, pcw ? "PASS" : "FAIL", InpMaxCloseWickPct * 100.0,
+      fwick_pct  * 100.0, pfw ? "PASS" : "FAIL", InpMaxFarWickPct   * 100.0,
+      range_ratio,        pr  ? "PASS" : "FAIL", InpRangeMult,
+      vol_ratio,          pv  ? "PASS" : "FAIL", InpVolMult,
       verdict, fail));
   }

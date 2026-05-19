@@ -42,6 +42,7 @@
 //--- inputs --------------------------------------------------------
 input double InpMinBodyPct       = 0.70;   // Min body / range
 input double InpMaxCloseWickPct  = 0.10;   // Max close-side wick / range
+input double InpMaxFarWickPct    = 0.05;   // Max far-side (opposite) wick / range
 input int    InpLocalLookback    = 5;      // Bars used for local mean baseline
 input double InpRangeMult        = 1.5;    // Min range / local mean range
 input double InpVolMult          = 1.5;    // Min tick_volume / local mean volume
@@ -169,9 +170,12 @@ void EvaluateBar(const int shift,
 
    const double close_wick = (dir == MC_DIR_BUY) ? (h - c) : (c - lo);
    const double close_wick_pct = close_wick / rng;
+   const double far_wick = (dir == MC_DIR_BUY) ? (o - lo) : (h - o);
+   const double far_wick_pct = far_wick / rng;
 
    if(body_pct < InpMinBodyPct) return;
    if(close_wick_pct > InpMaxCloseWickPct) return;
+   if(far_wick_pct > InpMaxFarWickPct) return;
 
    //--- LOCAL baselines (the video-faithful change) ----------------
    const double mean_range = MC_LocalMeanRange(shift, InpLocalLookback, high, low);

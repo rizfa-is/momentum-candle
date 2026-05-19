@@ -13,19 +13,20 @@ Updated whenever a worksheet's eye-tag block is parsed.
 
 | Day | File | Bars | Candidates | Top-50 | Tagged | YES | Last update |
 |---|---|---:|---:|---:|---|---:|---|
-| Tue 2026-05-12 | `2026-05-12-tue.md` | 276 | 101 | 50 | NO  | — | — |
-| Wed 2026-05-13 | `2026-05-13-wed.md` | 276 |  98 | 50 | NO  | — | — |
+| Tue 2026-05-12 | `2026-05-12-tue.md` | 276 | 101 | 50 | DEFERRED  | — | — |
+| Wed 2026-05-13 | `2026-05-13-wed.md` | 276 |  98 | 50 | DEFERRED  | — | — |
 | Thu 2026-05-14 | `2026-05-14-thu.md` | 276 | 103 | 50 | **YES** (50/50) | **2** | 2026-05-19 |
 | Fri 2026-05-15 | `2026-05-15-fri.md` | 276 | 110 | 50 | **YES** (50/50) | **6** | 2026-05-19 |
 | Mon 2026-05-18 | `2026-05-18-mon.md` | 248 |  96 | 50 | **YES** (50/50) | **8** | 2026-05-19 |
 
-## Aggregate
+## Aggregate (DATASET WRAPPED at 3/5)
 
-- Days tagged: **3 / 5**
+- Days tagged: **3 / 5** (Tue 12 + Wed 13 deferred — model deemed sufficient on 3 days)
 - Total YES tags: **16**
 - Total NO tags: **134**
 - Total bars considered: 1,352
 - Total top-50 candidates across all days: 250
+- Wrap date: 2026-05-19
 
 ## YES tags so far
 

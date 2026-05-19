@@ -40,6 +40,7 @@
 //--- inputs --------------------------------------------------------
 input double InpMinBodyPct        = 0.70;   // Min body / range
 input double InpMaxCloseWickPct   = 0.10;   // Max close-side wick / range
+input double InpMaxFarWickPct     = 0.05;   // Max far-side (opposite) wick / range
 input int    InpAtrPeriod         = 14;     // Wilder ATR period
 input double InpAtrMult           = 1.0;    // Min range / ATR
 input int    InpVolSmaPeriod      = 20;     // SMA period for tick volume
@@ -161,8 +162,11 @@ void EvaluateBar(const int shift,
 
    const double close_wick     = (dir == MC_DIR_BUY) ? (h - c) : (c - lo);
    const double close_wick_pct = close_wick / rng;
+   const double far_wick       = (dir == MC_DIR_BUY) ? (o - lo) : (h - o);
+   const double far_wick_pct   = far_wick / rng;
    if(body_pct < InpMinBodyPct) return;
    if(close_wick_pct > InpMaxCloseWickPct) return;
+   if(far_wick_pct > InpMaxFarWickPct) return;
 
    //--- ATR(14) baseline -------------------------------------------
    const double atr = MC_WilderATR(shift, InpAtrPeriod, high, low, close);
