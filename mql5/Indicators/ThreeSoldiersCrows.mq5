@@ -55,6 +55,7 @@ input double InpMinBodyPoints    = 500;    //   threshold (when enabled)
 input bool   InpUseOpenRule      = false;  // enforce open-vs-prior-bar relationship
 input bool   InpStrictOpen       = false;  //   strict: open inside prior body; loose: open below prior close
 input bool   InpSkipEqualClose   = false;  // require strictly rising/falling closes (no flat or non-monotonic)
+input bool   InpUseReversalCtx   = false;  // require opposite-color bar BEFORE the 3-pattern (true reversal)
 
 input group "Optional session filter"
 input bool   InpUseSessionFilter = false;  // skip London chop window if true
@@ -98,6 +99,7 @@ int OnInit()
    if(InpUseMinBodyPoints) flags += StringFormat(" body>=%.0fpt", InpMinBodyPoints);
    if(InpUseOpenRule)      flags += InpStrictOpen ? " strict-open" : " loose-open";
    if(InpSkipEqualClose)   flags += " mono";
+   if(InpUseReversalCtx)   flags += " rev-ctx";
    if(InpUseSessionFilter) flags += " sessA+NY";
    if(StringLen(flags) == 0) flags = " RAW (no filters)";
 
@@ -271,6 +273,14 @@ bool IsThreeWhiteSoldiers(const int shift,
    if(!BullOpenInsidePrior(shift,     shift + 1, open, close)) return false;
    if(!BullOpenInsidePrior(shift + 1, shift + 2, open, close)) return false;
 
+   // Reversal context: bar BEFORE the trio must be bearish (close < open)
+   if(InpUseReversalCtx)
+     {
+      const int prev = shift + 3;
+      if(prev >= ArraySize(close)) return false;
+      if(!(close[prev] < open[prev])) return false;
+     }
+
    return true;
   }
 
@@ -297,6 +307,14 @@ bool IsThreeBlackCrows(const int shift,
 
    if(!BearOpenInsidePrior(shift,     shift + 1, open, close)) return false;
    if(!BearOpenInsidePrior(shift + 1, shift + 2, open, close)) return false;
+
+   // Reversal context: bar BEFORE the trio must be bullish (close > open)
+   if(InpUseReversalCtx)
+     {
+      const int prev = shift + 3;
+      if(prev >= ArraySize(close)) return false;
+      if(!(close[prev] > open[prev])) return false;
+     }
 
    return true;
   }
