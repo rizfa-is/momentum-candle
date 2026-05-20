@@ -45,15 +45,19 @@
 #property indicator_width2  2
 
 //--- inputs --------------------------------------------------------
-input group "Pattern thresholds"
-input double InpMinBodyPct       = 0.60;   // Min body / range per candle
-input double InpMaxWickPct       = 0.25;   // Max same-direction wick / range
-input double InpMinBodyPoints    = 500;    // Min body in price points (0 = no floor)
-input bool   InpStrictOpen       = true;   // true: open inside prior body; false: open beyond prior close
+input group "Filter toggles (all OFF by default -- enable to test combos)"
+input bool   InpUseMinBodyPct    = false;  // enforce min body / range per candle
+input double InpMinBodyPct       = 0.60;   //   threshold (when enabled)
+input bool   InpUseMaxWickPct    = false;  // enforce max same-direction wick / range
+input double InpMaxWickPct       = 0.25;   //   threshold (when enabled)
+input bool   InpUseMinBodyPoints = false;  // enforce min body in absolute points
+input double InpMinBodyPoints    = 500;    //   threshold (when enabled)
+input bool   InpUseOpenRule      = false;  // enforce open-vs-prior-bar relationship
+input bool   InpStrictOpen       = false;  //   strict: open inside prior body; loose: open below prior close
+input bool   InpSkipEqualClose   = false;  // require strictly rising/falling closes (no flat or non-monotonic)
 
-input group "Optional filters"
-input bool   InpSkipEqualClose   = true;   // require strictly rising/falling closes (no flat)
-input bool   InpUseSessionFilter = false;  // skip London chop window
+input group "Optional session filter"
+input bool   InpUseSessionFilter = false;  // skip London chop window if true
 input int    InpAsiaStartHourUTC = 23;
 input int    InpAsiaEndHourUTC   = 8;
 input int    InpNYStartHourUTC   = 12;
@@ -88,13 +92,17 @@ int OnInit()
    PlotIndexSetDouble(0, PLOT_EMPTY_VALUE, EMPTY_VALUE);
    PlotIndexSetDouble(1, PLOT_EMPTY_VALUE, EMPTY_VALUE);
 
+   string flags = "";
+   if(InpUseMinBodyPct)    flags += StringFormat(" body>=%.0f%%", InpMinBodyPct * 100.0);
+   if(InpUseMaxWickPct)    flags += StringFormat(" wick<=%.0f%%", InpMaxWickPct * 100.0);
+   if(InpUseMinBodyPoints) flags += StringFormat(" body>=%.0fpt", InpMinBodyPoints);
+   if(InpUseOpenRule)      flags += InpStrictOpen ? " strict-open" : " loose-open";
+   if(InpSkipEqualClose)   flags += " mono";
+   if(InpUseSessionFilter) flags += " sessA+NY";
+   if(StringLen(flags) == 0) flags = " RAW (no filters)";
+
    IndicatorSetString(INDICATOR_SHORTNAME,
-                      StringFormat("Three Soldiers/Crows (body>=%.0f%%, wick<=%.0f%%, body>=%.0fpt%s%s)",
-                                   InpMinBodyPct * 100.0,
-                                   InpMaxWickPct * 100.0,
-                                   InpMinBodyPoints,
-                                   InpStrictOpen ? ", strict" : ", loose",
-                                   InpUseSessionFilter ? ", sess A+NY" : ""));
+                      StringFormat("Three Soldiers/Crows%s", flags));
 
    ArraySetAsSeries(BufBuy,       true);
    ArraySetAsSeries(BufSell,      true);
@@ -149,14 +157,21 @@ bool IsBullCandle(const int shift,
    if(c <= o) return false;
 
    const double body = c - o;
-   const double body_pct = body / rng;
-   const double upper_wick = h - c;
-   const double upper_pct = upper_wick / rng;
 
-   if(body_pct < InpMinBodyPct) return false;
-   if(upper_pct > InpMaxWickPct) return false;
+   if(InpUseMinBodyPct)
+     {
+      const double body_pct = body / rng;
+      if(body_pct < InpMinBodyPct) return false;
+     }
 
-   if(InpMinBodyPoints > 0)
+   if(InpUseMaxWickPct)
+     {
+      const double upper_wick = h - c;
+      const double upper_pct = upper_wick / rng;
+      if(upper_pct > InpMaxWickPct) return false;
+     }
+
+   if(InpUseMinBodyPoints && InpMinBodyPoints > 0)
      {
       const double point = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
       if(point > 0 && (body / point) < InpMinBodyPoints) return false;
@@ -175,14 +190,21 @@ bool IsBearCandle(const int shift,
    if(c >= o) return false;
 
    const double body = o - c;
-   const double body_pct = body / rng;
-   const double lower_wick = c - l;
-   const double lower_pct = lower_wick / rng;
 
-   if(body_pct < InpMinBodyPct) return false;
-   if(lower_pct > InpMaxWickPct) return false;
+   if(InpUseMinBodyPct)
+     {
+      const double body_pct = body / rng;
+      if(body_pct < InpMinBodyPct) return false;
+     }
 
-   if(InpMinBodyPoints > 0)
+   if(InpUseMaxWickPct)
+     {
+      const double lower_wick = c - l;
+      const double lower_pct = lower_wick / rng;
+      if(lower_pct > InpMaxWickPct) return false;
+     }
+
+   if(InpUseMinBodyPoints && InpMinBodyPoints > 0)
      {
       const double point = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
       if(point > 0 && (body / point) < InpMinBodyPoints) return false;
@@ -197,6 +219,7 @@ bool IsBearCandle(const int shift,
 bool BullOpenInsidePrior(const int curr, const int prior,
                          const double &open[], const double &close[])
   {
+   if(!InpUseOpenRule) return true;  // no open-relationship constraint
    const double curr_open = open[curr];
    const double prior_open = open[prior];
    const double prior_close = close[prior];
@@ -208,6 +231,7 @@ bool BullOpenInsidePrior(const int curr, const int prior,
 bool BearOpenInsidePrior(const int curr, const int prior,
                          const double &open[], const double &close[])
   {
+   if(!InpUseOpenRule) return true;
    const double curr_open = open[curr];
    const double prior_open = open[prior];
    const double prior_close = close[prior];
