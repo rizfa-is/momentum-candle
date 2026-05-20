@@ -9,6 +9,7 @@ MQL5 source for the momentum-candle indicators and the backtest harness.
 | `Indicators/MomentumCandle_Video.mq5` | Variant 1 — video-faithful (local-N range/volume) |
 | `Indicators/MomentumCandle_Proxy.mq5` | Variant 2 — ATR(14) + SMA(20) proxy |
 | `Indicators/MomentumCandle_Visualizer.mq5` | Visual aid — draws baseline + threshold whiskers per bar, top-left HUD with PASS/FAIL on each filter |
+| `Indicators/ThreeSoldiersCrows.mq5` | Three White Soldiers (BUY) and Three Black Crows (SELL) classical pattern detector. Body%, wick%, optional body-points floor, strict/loose open mode, optional Asia+NY session filter, 0..1 strength score per pattern. |
 | `Experts/MomentumCandleBacktest.mq5` | EA that reads either indicator's buffers and trades in the Strategy Tester |
 | `Experts/MomentumCandle_OptimizedEA.mq5` | **Self-contained deployable EA**: 7-rule filter + pullback_236 entry + cap=1 + 30-min time-stop. 5-month backtest WR 72.5%, PF 1.54. See `../docs/deployment.md`. |
 
