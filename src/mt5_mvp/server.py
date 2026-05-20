@@ -27,6 +27,7 @@ from fastmcp import FastMCP
 from . import account, market, trade
 from .client import ensure_initialized
 from .strategies import momentum_candle as mc
+from .strategies import support_resistance as sr
 
 log = logging.getLogger("mt5mcp")
 
@@ -45,6 +46,9 @@ Workflow rules (always follow):
    timeframe M15). Each setup includes Fibonacci-based entry, SL, TP1 (the
    candle high), and TP2 (1.27 extension). See
    docs/strategies/momentum-candle.md for the full strategy.
+7. To find major S/R levels, use `get_major_sr`. Auto-escalates from M5
+   to higher timeframes when one side of price has no coverage.
+   See docs/strategies/support-resistance.md.
 
 Volume conventions on this InstaForex demo:
 - Min volume is typically 0.01 lots; step is 0.01.
@@ -242,6 +246,82 @@ def scan_momentum_setups(
         min_confidence=float(min_confidence),
     )
     return [s.to_dict() for s in setups]
+
+
+@mcp.tool(annotations={"readOnlyHint": True})
+def get_major_sr(
+    symbol: str = "XAUUSD",
+    timeframe: str = "M5",
+    lookback: int = 500,
+    cluster_atr_mult: float = 0.5,
+    min_touches: int = 3,
+    pivot_left: int = 10,
+    pivot_right: int = 10,
+    use_escalation: bool = True,
+    max_tier: int = 5,
+    include_round: bool = True,
+    round_step: float = 50.0,
+    include_multi_tf_extremes: bool = True,
+) -> dict[str, Any]:
+    """Find major support/resistance levels for a symbol.
+
+    Uses swing-pivot clustering on the active timeframe. When the scan
+    only surfaces levels above (or below) the current price, the
+    algorithm escalates through the timeframe ladder
+    M5 -> M15 -> H1 -> H4 -> D1 until both sides are populated or the
+    ladder is exhausted (controlled by ``max_tier``).
+
+    Round-number levels (multiples of ``round_step``) and multi-TF
+    extremes (day/prior-day/week high+low from D1) are injected as
+    static levels in addition to swing-pivot clusters.
+
+    Args:
+        symbol: trading symbol (default XAUUSD).
+        timeframe: starting timeframe; one of M5, M15, H1, H4, D1.
+        lookback: bars to scan per tier (default 500).
+        cluster_atr_mult: cluster radius = this x ATR(14).
+        min_touches: minimum pivots clustered to qualify as major.
+        pivot_left, pivot_right: fractal-confirmation lag bars.
+        use_escalation: enable timeframe-ladder escalation.
+        max_tier: cap tier index (1=M5, 2=M15, 3=H1, 4=H4, 5=D1).
+        include_round: inject round-number levels.
+        round_step: distance between round levels (default 50.0).
+        include_multi_tf_extremes: inject day/week highs+lows.
+
+    Returns:
+        ``{
+            "current_price": ...,
+            "current_time_utc": ...,
+            "atr14": ...,
+            "tiers_scanned": [...],
+            "escalation_triggered": bool,
+            "levels": [{"price", "weight", "type", "tier",
+                        "distance_pts", "side"}, ...]
+        }``
+
+        Levels are sorted nearest-first by absolute distance from the
+        current price.
+    """
+    if (err := _ensure()) is not None:
+        return err
+
+    try:
+        return sr.find_major_levels(
+            symbol=symbol,
+            timeframe=timeframe,
+            lookback=int(lookback),
+            cluster_atr_mult=float(cluster_atr_mult),
+            min_touches=int(min_touches),
+            pivot_left=int(pivot_left),
+            pivot_right=int(pivot_right),
+            use_escalation=bool(use_escalation),
+            max_tier=int(max_tier),
+            include_round=bool(include_round),
+            round_step=float(round_step),
+            include_multi_tf_extremes=bool(include_multi_tf_extremes),
+        )
+    except ValueError as e:
+        return {"error": str(e)}
 
 
 __all__ = ["mcp"]

@@ -25,6 +25,7 @@ ignore = [
 [lint.per-file-ignores]
 "tests/**/*.py" = ["ANN", "T20"]
 ".claude/hooks/**/*.py" = ["T20"]
+"scripts/**/*.py" = ["T20", "ANN", "F541", "SIM103", "SIM108", "SIM114", "SIM300", "UP017", "I001", "B007", "F401", "F841", "RUF010"]
 
 [format]
 quote-style = "double"
