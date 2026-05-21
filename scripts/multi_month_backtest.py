@@ -311,9 +311,12 @@ def main() -> None:
             }
 
     # Build report
-    md = ["# Multi-month backtest -- Jan-May 2026\n\n"]
+    md = [f"# Multi-month backtest -- {months[0]} to {months[-1]} ({len(months)} months)\n\n"]
     md.append(f"Months tested: {', '.join(months)}\n\n")
-    md.append("Three filters x two entry modes x five months = 30 configurations.\n\n")
+    md.append(
+        f"Three filters x two entry modes x {len(months)} months = "
+        f"{3 * 2 * len(months)} configurations.\n\n"
+    )
 
     md.append("## Per-month results\n\n")
     md.append("```\n")
@@ -338,7 +341,7 @@ def main() -> None:
     md.append("```\n\n")
 
     # Aggregate
-    md.append("## Pooled aggregate (5 months)\n\n")
+    md.append(f"## Pooled aggregate ({len(months)} months)\n\n")
     md.append("```\n")
     md.append(
         f"{'config':<46}  {'fill':>5}  {'TP2':>4}  {'SL':>4}  "

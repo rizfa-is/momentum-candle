@@ -1,14 +1,98 @@
-# Multi-month backtest -- Jan-May 2026
+# Multi-month backtest -- 2025-01 to 2026-05 (17 months)
 
-Months tested: 2026-01, 2026-02, 2026-03, 2026-04, 2026-05
+Months tested: 2025-01, 2025-02, 2025-03, 2025-04, 2025-05, 2025-06, 2025-07, 2025-08, 2025-09, 2025-10, 2025-11, 2025-12, 2026-01, 2026-02, 2026-03, 2026-04, 2026-05
 
-Three filters x two entry modes x five months = 30 configurations.
+Three filters x two entry modes x 17 months = 102 configurations.
 
 ## Per-month results
 
 ```
 config                                           sigs   fill   TP2    SL     WR  meanRR      net      PF
 ---------------------------------------------------------------------------------------------------------
+2025-01 | baseline           | next_open            3      3     2     1  66.7%   0.324    -0.35    0.65
+2025-01 | baseline           | pullback_236         3      3     1     1  33.3%   0.584    -0.42    0.58
+2025-01 | optimized          | next_open            1      1     1     0  100.0%   0.289    +0.29     inf
+2025-01 | optimized          | pullback_236         1      1     0     0   0.0%   0.000    +0.00    0.00
+2025-01 | optimized_no_round | next_open            1      1     1     0  100.0%   0.289    +0.29     inf
+2025-01 | optimized_no_round | pullback_236         1      1     0     0   0.0%   0.000    +0.00    0.00
+
+2025-02 | baseline           | next_open            8      8     7     1  87.5%   0.291    +1.03    2.03
+2025-02 | baseline           | pullback_236         8      7     5     1  71.4%   0.585    +1.93    2.93
+2025-02 | optimized          | next_open            0      0     0     0   0.0%   0.000    +0.00    0.00
+2025-02 | optimized          | pullback_236         0      0     0     0   0.0%   0.000    +0.00    0.00
+2025-02 | optimized_no_round | next_open            2      2     2     0  100.0%   0.285    +0.57     inf
+2025-02 | optimized_no_round | pullback_236         2      2     2     0  100.0%   0.586    +1.17     inf
+
+2025-03 | baseline           | next_open            2      2     1     0  50.0%   0.265    +0.27     inf
+2025-03 | baseline           | pullback_236         2      2     1     0  50.0%   0.586    +0.59     inf
+2025-03 | optimized          | next_open            0      0     0     0   0.0%   0.000    +0.00    0.00
+2025-03 | optimized          | pullback_236         0      0     0     0   0.0%   0.000    +0.00    0.00
+2025-03 | optimized_no_round | next_open            0      0     0     0   0.0%   0.000    +0.00    0.00
+2025-03 | optimized_no_round | pullback_236         0      0     0     0   0.0%   0.000    +0.00    0.00
+
+2025-04 | baseline           | next_open           74     74    58    16  78.4%   0.294    +1.04    1.06
+2025-04 | baseline           | pullback_236        74     61    41    20  67.2%   0.586    +4.01    1.20
+2025-04 | optimized          | next_open            6      6     3     3  50.0%   0.301    -2.10    0.30
+2025-04 | optimized          | pullback_236         6      4     1     3  25.0%   0.585    -2.41    0.20
+2025-04 | optimized_no_round | next_open            9      9     5     4  55.6%   0.283    -2.58    0.35
+2025-04 | optimized_no_round | pullback_236         9      6     2     4  33.3%   0.585    -2.83    0.29
+
+2025-05 | baseline           | next_open           29     29    23     6  79.3%   0.291    +0.70    1.12
+2025-05 | baseline           | pullback_236        29     25    18     7  72.0%   0.586    +3.54    1.51
+2025-05 | optimized          | next_open            5      5     4     1  80.0%   0.282    +0.13    1.13
+2025-05 | optimized          | pullback_236         5      5     4     1  80.0%   0.586    +1.34    2.34
+2025-05 | optimized_no_round | next_open            6      6     5     1  83.3%   0.284    +0.42    1.42
+2025-05 | optimized_no_round | pullback_236         6      5     4     1  80.0%   0.586    +1.34    2.34
+
+2025-06 | baseline           | next_open           18     18    13     5  72.2%   0.265    -1.56    0.69
+2025-06 | baseline           | pullback_236        18     15    10     5  66.7%   0.586    +0.86    1.17
+2025-06 | optimized          | next_open            1      1     1     0  100.0%   0.266    +0.27     inf
+2025-06 | optimized          | pullback_236         1      1     1     0  100.0%   0.585    +0.59     inf
+2025-06 | optimized_no_round | next_open            1      1     1     0  100.0%   0.266    +0.27     inf
+2025-06 | optimized_no_round | pullback_236         1      1     1     0  100.0%   0.585    +0.59     inf
+
+2025-07 | baseline           | next_open            5      5     5     0  100.0%   0.289    +1.45     inf
+2025-07 | baseline           | pullback_236         5      3     3     0  100.0%   0.585    +1.76     inf
+2025-07 | optimized          | next_open            1      1     1     0  100.0%   0.252    +0.25     inf
+2025-07 | optimized          | pullback_236         1      0     0     0   0.0%   0.000    +0.00    0.00
+2025-07 | optimized_no_round | next_open            1      1     1     0  100.0%   0.252    +0.25     inf
+2025-07 | optimized_no_round | pullback_236         1      0     0     0   0.0%   0.000    +0.00    0.00
+
+2025-08 | baseline           | next_open            5      5     2     3  40.0%   0.320    -2.36    0.21
+2025-08 | baseline           | pullback_236         5      4     1     3  25.0%   0.585    -2.41    0.20
+2025-08 | optimized          | next_open            2      2     1     1  50.0%   0.368    -0.63    0.37
+2025-08 | optimized          | pullback_236         2      1     0     1   0.0%   0.000    -1.00    0.00
+2025-08 | optimized_no_round | next_open            2      2     1     1  50.0%   0.368    -0.63    0.37
+2025-08 | optimized_no_round | pullback_236         2      1     0     1   0.0%   0.000    -1.00    0.00
+
+2025-09 | baseline           | next_open           10     10     7     3  70.0%   0.285    -1.01    0.66
+2025-09 | baseline           | pullback_236        10      7     4     3  57.1%   0.586    -0.66    0.78
+2025-09 | optimized          | next_open            0      0     0     0   0.0%   0.000    +0.00    0.00
+2025-09 | optimized          | pullback_236         0      0     0     0   0.0%   0.000    +0.00    0.00
+2025-09 | optimized_no_round | next_open            1      1     1     0  100.0%   0.354    +0.35     inf
+2025-09 | optimized_no_round | pullback_236         1      1     1     0  100.0%   0.586    +0.59     inf
+
+2025-10 | baseline           | next_open          156    156   115    41  73.7%   0.294    -7.16    0.83
+2025-10 | baseline           | pullback_236       156    144    97    47  67.4%   0.586    +9.81    1.21
+2025-10 | optimized          | next_open           25     25    18     7  72.0%   0.294    -1.72    0.75
+2025-10 | optimized          | pullback_236        25     23    16     7  69.6%   0.586    +2.37    1.34
+2025-10 | optimized_no_round | next_open           36     36    27     9  75.0%   0.299    -0.92    0.90
+2025-10 | optimized_no_round | pullback_236        36     33    24     9  72.7%   0.586    +5.06    1.56
+
+2025-11 | baseline           | next_open           60     60    48    12  80.0%   0.289    +1.87    1.16
+2025-11 | baseline           | pullback_236        60     52    39    13  75.0%   0.586    +9.84    1.76
+2025-11 | optimized          | next_open            8      8     5     3  62.5%   0.298    -1.51    0.50
+2025-11 | optimized          | pullback_236         8      6     3     3  50.0%   0.586    -1.24    0.59
+2025-11 | optimized_no_round | next_open           12     12     9     3  75.0%   0.293    -0.36    0.88
+2025-11 | optimized_no_round | pullback_236        12     10     7     3  70.0%   0.586    +1.10    1.37
+
+2025-12 | baseline           | next_open           52     52    38    11  73.1%   0.281    -0.30    0.97
+2025-12 | baseline           | pullback_236        52     44    30    11  68.2%   0.586    +6.57    1.60
+2025-12 | optimized          | next_open            5      5     2     2  40.0%   0.298    -1.40    0.30
+2025-12 | optimized          | pullback_236         5      5     2     2  40.0%   0.585    -0.83    0.59
+2025-12 | optimized_no_round | next_open            7      7     3     3  42.9%   0.306    -2.08    0.31
+2025-12 | optimized_no_round | pullback_236         7      7     3     3  42.9%   0.586    -1.24    0.59
+
 2026-01 | baseline           | next_open          161    161   117    43  72.7%   0.287    -9.47    0.78
 2026-01 | baseline           | pullback_236       161    141    94    46  66.7%   0.586    +9.05    1.20
 2026-01 | optimized          | next_open           37     37    27    10  73.0%   0.295    -2.04    0.80
@@ -46,19 +130,19 @@ config                                           sigs   fill   TP2    SL     WR 
 
 ```
 
-## Pooled aggregate (5 months)
+## Pooled aggregate (17 months)
 
 ```
 config                                           fill   TP2    SL     WR      net      PF   per-trade
 ----------------------------------------------------------------------------------------------------
-ALL | baseline           | next_open             890   673   216  75.6%   -21.02    0.90    -0.024 R
-ALL | baseline           | pullback_236          793   549   243  69.2%   +78.52    1.32    +0.099 R
+ALL | baseline           | next_open            1312   992   315  75.6%   -27.41    0.91    -0.021 R
+ALL | baseline           | pullback_236         1160   799   354  68.9%  +113.93    1.32    +0.098 R
 
-ALL | optimized          | next_open             139   114    25  82.0%    +8.83    1.35    +0.064 R
-ALL | optimized          | pullback_236          121    88    33  72.7%   +18.54    1.56    +0.153 R
+ALL | optimized          | next_open             193   150    42  77.7%    +2.41    1.06    +0.012 R
+ALL | optimized          | pullback_236          167   115    50  68.9%   +17.35    1.35    +0.104 R
 
-ALL | optimized_no_round | next_open             215   172    43  80.0%    +8.11    1.19    +0.038 R
-ALL | optimized_no_round | pullback_236          189   137    52  72.5%   +28.23    1.54    +0.149 R
+ALL | optimized_no_round | next_open             293   228    64  77.8%    +3.69    1.06    +0.013 R
+ALL | optimized_no_round | pullback_236          256   181    73  70.7%   +33.00    1.45    +0.129 R
 
 ```
 
@@ -71,126 +155,22 @@ blowout in one month and average elsewhere.
 ```
 month       baseline+pull       optimized+pull      opt_no_round+pull 
 ---------------------------------------------------------------------------
+2025-01       3t 33.3% PF0.58     1t  0.0% PF0.00     1t  0.0% PF0.00 
+2025-02       7t 71.4% PF2.93     0t  0.0% PF0.00     2t 100.0% PFinf 
+2025-03       2t 50.0% PFinf      0t  0.0% PF0.00     0t  0.0% PF0.00 
+2025-04      61t 67.2% PF1.20     4t 25.0% PF0.20     6t 33.3% PF0.29 
+2025-05      25t 72.0% PF1.51     5t 80.0% PF2.34     5t 80.0% PF2.34 
+2025-06      15t 66.7% PF1.17     1t 100.0% PFinf     1t 100.0% PFinf 
+2025-07       3t 100.0% PFinf     0t  0.0% PF0.00     0t  0.0% PF0.00 
+2025-08       4t 25.0% PF0.20     1t  0.0% PF0.00     1t  0.0% PF0.00 
+2025-09       7t 57.1% PF0.78     0t  0.0% PF0.00     1t 100.0% PFinf 
+2025-10     144t 67.4% PF1.21    23t 69.6% PF1.34    33t 72.7% PF1.56 
+2025-11      52t 75.0% PF1.76     6t 50.0% PF0.59    10t 70.0% PF1.37 
+2025-12      44t 68.2% PF1.60     5t 40.0% PF0.59     7t 42.9% PF0.59 
 2026-01     141t 66.7% PF1.20    32t 59.4% PF0.86    44t 59.1% PF0.85 
 2026-02     200t 71.5% PF1.47    21t 71.4% PF1.46    42t 73.8% PF1.65 
 2026-03     254t 72.8% PF1.57    42t 81.0% PF2.49    63t 79.4% PF2.25 
 2026-04     133t 63.2% PF1.00    17t 70.6% PF1.41    30t 70.0% PF1.37 
 2026-05      65t 66.2% PF1.14     9t 88.9% PF4.68    10t 90.0% PF5.27 
-```
-
-## Honest verdict (5 months, 1,403 baseline pullback trades, 121 optimized pullback)
-
-### Major findings
-
-1. **The optimized + pullback_236 filter is real.** Across 5 months pooled:
-   - 121 trades, WR 72.7%, PF 1.56, +0.153R per trade
-   - May (in-sample): PF 4.68 was lucky variance
-   - The other 4 months pool to PF 1.30 — still meaningfully profitable
-
-2. **`optimized_no_round` (drop the donut-zone rule) is the most defensible.**
-   - 189 trades vs 121 -- 56% more sample
-   - PF 1.54 vs 1.56 -- essentially identical aggregate performance
-   - But the `dist_to_round_50` filter showed +1.5pp WR lift averaged
-     across all months. So it's a coin flip whether removing it helps
-   - Recommendation: remove it for simpler, less curve-fit ruleset
-
-3. **January is the trouble month.** Optimized variants underperform
-   baseline in January (PF 0.86 vs 1.20). Could be a market-regime issue
-   (low-volatility, holiday-thinned trading) where the optimized
-   filters over-restrict. Worth flagging if backtests get extended back
-   further.
-
-4. **March was the best month.** PF 2.49 / 2.25 in optimized variants.
-   Caution: this could be where the optimized filter happens to fit
-   the regime, not a repeatable advantage.
-
-5. **Baseline pullback_236 is also profitable (PF 1.32, +0.099R/trade).**
-   Big sample (793 trades) gives high confidence. The optimized filters
-   add ~+0.05R/trade on top while cutting volume by 75-85%.
-
-### Trade volume tradeoff
-
-```
-                  trades  per-trade  monthly trades  monthly net R
-baseline+pull     793     +0.099 R   159             +15.7
-opt_no_round+pull 189     +0.149 R    38              +5.6
-optimized+pull    121     +0.153 R    24              +3.7
-```
-
-**baseline + pullback** trades 4-7x more often for slightly less
-expected R per trade. In aggregate, **baseline yields more total R per
-month** (+15.7R vs +5.6R) -- if you can stomach 159 trades/month and
-the corresponding spread cost.
-
-After ~0.10R/trade spread cost on InstaForex demo:
-
-```
-                  per-trade   spread   net real-money   monthly real-money
-baseline+pull     +0.099 R    -0.10R   -0.001 R         -0.16 R
-opt_no_round+pull +0.149 R    -0.10R   +0.049 R         +1.86 R
-optimized+pull    +0.153 R    -0.10R   +0.053 R         +1.27 R
-```
-
-**After spread costs, baseline becomes break-even.** The optimized
-filters preserve a +0.05R edge. At 1% risk per trade on a $10k
-account, that's ~$5/trade × 24-38 trades/month = ~$120-190/month
-expected -- about 1.5% monthly return on capital. Modest but positive.
-
-### Stability check
-
-Per-month WR for `optimized + pullback_236`:
-
-```
-2026-01: 59.4%   <- below break-even (63.1%), losing month
-2026-02: 71.4%
-2026-03: 81.0%
-2026-04: 70.6%
-2026-05: 88.9%   <- May was lucky
-```
-
-Range: 59-89%. **One losing month out of five.** That's expected
-variance for a 65-trade-per-month strategy with a true 70% WR. Worst
-month dropdown: -1.87R from 32 trades = -5.8% of cumulative.
-
-### Recommended deployment
-
-1. **Use `optimized_no_round` + pullback_236 + cap=1**
-   - Simplest defensible filter (7 rules)
-   - PF 1.54 across 189 trades over 5 months
-   - +0.149R per trade gross / +0.05R net after spread
-   - ~38 trades/month average
-
-2. **Run on demo for 4 weeks** before any real money. Compare actual
-   WR/PF to backtest. If WR < 65%, the filter doesn't generalize to
-   live conditions; investigate.
-
-3. **Plan for the bad month.** Backtest shows ~1 in 5 months will be
-   losing (Jan was one). With max DD ~6% per losing month, a 2-month
-   bad streak takes you down ~12%. Size positions accordingly.
-
-## What's next
-
-Three branches:
-
-A. **Implement the strategy as MQL5 EA + Python signal generator**
-   for live demo testing. Take what we have and run it.
-
-B. **Pull more historical data** (2025 full year) to expand the
-   stability test from 5 months to 17 months. Slow but high-value.
-
-C. **Refine the filter further** by trying more parameter
-   combinations on the existing data. Diminishing returns and more
-   curve-fit risk.
-
-I'd lean A then B. Filter refinement is curve-fit territory now.
-
-## Files
-
-```
-cache/2026-{01,02,03,04,05}-m5.json     gitignored monthly data
-scripts/pull_month.py                   generic month puller
-scripts/multi_month_backtest.py         this backtest
-data/backtests/multi-month-results.json raw per-config metrics
-data/backtests/multi-month-summary.md   this report
 ```
 
