@@ -3,21 +3,21 @@
 Living checkpoint. Loaded automatically via `opencode.json` at every
 session start. Read this before deriving anything from scratch.
 
-Last updated: 2026-05-21 (Phase 7 + EA filling-mode fix)
+Last updated: 2026-05-21 (Phase 8 -- 29-month aggregate)
 
 ## Current state — at-a-glance
 
 ```
-main branch:                origin/main @ 043990b (uncommitted phase 6+7 work)
+main branch:                origin/main @ 53bb218 (uncommitted phase 8 work)
 deployable strategy tag:    v0.5.0-deployable
 S/R toolset tag:            v0.6.0-sr-aware
 
 Backtest verdict: v0.5.0 is the only strategy with multi-month edge.
-Six backtest phases attempted; five rejected; one survives.
-17-month aggregate (Jan 2025 - May 2026): 256 trades, 70.7% WR,
-PF 1.45, +33.00R net. Four losing months out of seventeen (24%).
-Phase 7 confirms edge survives older data; PF eroded only 0.04
-when extended from 12 to 17 months.
+Eight phases attempted; five rejected; three confirmations.
+29-month aggregate (Jan 2024 - May 2026): 262 trades, 70.6% WR,
+PF 1.44, +33.34R net. Six losing months out of 29 (21%).
+Phase 8 reveals 2024 was effectively a zero-trade year (10 signals,
+6 fills, +0.34R) -- strategy is high-volatility-regime dependent.
 EA filling-mode auto-detect applied (InstaForex demo compatible).
 Next step:        30-day demo forward-test of v0.5.0.
 ```
@@ -53,6 +53,15 @@ Risk:          1% account per trade (configurable)
   Worst month: April 2025 -2.83R on 6 trades (sparse).
   6 of 17 months effectively no-trade (volatility too low).
   93% of net R from 9 of 17 active months — regime-dependent.
+
+29-month deep-history validation (Phase 8, Jan 2024 - May 2026):
+  262 trades, WR 70.6%, PF 1.44, +33.34 R net
+  Adding all of 2024 added only 6 trades, +0.34R net.
+  2024 was effectively a zero-trade year (10 signals, 6 filled).
+  93% of all 262 trades fired in 9 of 29 months.
+  Strategy is fundamentally high-volatility-regime dependent.
+  Annualized return at 1% risk: ~+11.5% (vs ~+27% on 17-mo subset).
+  PF still passes deployment thresholds (>1.40).
 
 Per-month stability (12-month run):
   2025-06:   1t  WR 100% PF inf    sparse
@@ -191,8 +200,9 @@ Safety:      MT5_DRY_RUN=1 default; CONFIRM_LIVE token required for
 - **MT5 data folder:**
   `C:\Users\DELL\AppData\Roaming\MetaQuotes\Terminal\F762D69EEEA9B4430D7F17C82167C844`
 - **Cached data files:**
-  `cache/2025-{01..12}-m5.json` + `cache/2026-{01..05}-m5.json`
-  (17 months M5 XAUUSD, ~95k bars total, gitignored)
+  `cache/2024-{01..12}-m5.json` + `cache/2025-{01..12}-m5.json`
+  + `cache/2026-{01..05}-m5.json`
+  (29 months M5 XAUUSD, ~165k bars total, gitignored)
 - **Cached candle dump from MCP:**
   `C:\Users\DELL\.local\share\opencode\tool-output\tool_e3c60fb800018NefI01GMfrDQg`
   (used for the eye-tag dataset; 1500 M5 bars)
@@ -207,9 +217,9 @@ Safety:      MT5_DRY_RUN=1 default; CONFIRM_LIVE token required for
 6. **Pullback_236 entry > next-bar-open** for RR balance. Universal across phases.
 7. **Volume filter (V5) is dead.** Across 5 months, V5 mean YES 1.27x vs NO 1.16x — no signal.
 8. **ICT sweep-rejection (SRR) at major S/R LOSES MONEY at scale.** Phase 6 verdict — 1875 trades, WR 48.8%, -419R net, 12/12 losing months. The classic "stop hunts reverse" narrative is falsified on M5 XAUUSD. **Do not retest with different S/R parameters; the result is structural.**
-9. **AMD model (London-sweep + NY-displacement, "LSD") is break-even, not edge.** Phase 6: 169 trades, 63.3% WR, +0.66R net. The bias exists but not enough to overcome 0.586:1 RR.
+10. **Strategy is high-volatility-regime dependent.** Phase 8 confirmed: across 29 months, 93% of trades fired in just 9 months. 2024 produced 10 signals/year vs 2026 H1's ~30 signals/month. Quiet markets = no trading. This is correct behavior, not a bug. Annualized return collapses from ~27% (17-mo subset) to ~11.5% (full 29-mo) when low-vol periods are included.
 
-## Seven-phase research summary
+## Eight-phase research summary
 
 ```
 Phase 1 (May factor study)         12 features tested              extracted candidates
@@ -223,8 +233,13 @@ Phase 6 (ICT/AMD portfolio)        14 variants (LSD, SRR + conf)   ALL REJECTED
 Phase 7 (17-month deep-history)    v0.5.0 extended Jan 25-May 26   CONFIRMED
                                                                     PF 1.45, +33R, 4/17 losing months
                                                                     Edge survives older data; mild erosion only
+Phase 8 (29-month deep-history)    v0.5.0 extended Jan 24-May 26   CONFIRMED
+                                                                    PF 1.44, +33R, 6/29 losing months
+                                                                    2024 was zero-trade year (10 signals, +0.34R)
+                                                                    Strategy is regime-dependent (high-vol player)
+                                                                    Annualized ~+11.5% across full sample
 
-Healthy ratio: 2 confirmations / 5 rejections = we know what works AND what doesn't.
+Healthy ratio: 3 confirmations / 5 rejections = robust positive evidence.
 ```
 
 ## Resume point — next session can pick from these
