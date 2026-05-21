@@ -21,7 +21,8 @@
 //|     Canceled if not filled within InpPullbackBars   (10) bars.   |
 //|                                                                  |
 //|   EXIT: TP at 1.27 fib extension, SL at -0.10 below candle low   |
-//|     (mirror for SELL). Time stop at InpMaxHoldMinutes (30).      |
+//|     (mirror for SELL). Time stop at InpMaxHoldMinutes (300 min   |
+//|     = 5 hours = 60 M5 bars, matches backtest SIM_HORIZON_BARS).  |
 //|                                                                  |
 //|   POSITION CAP: max 1 simultaneous position with this magic.     |
 //|                                                                  |
@@ -57,7 +58,7 @@ input int    InpMaxMonotonic     = 4;      // Max trend_monotonic_prior_7
 
 input group "Entry / exit"
 input int    InpPullbackBars     = 10;     // Pullback limit lifetime in bars
-input int    InpMaxHoldMinutes   = 30;     // Hard time-stop in minutes
+input int    InpMaxHoldMinutes   = 300;    // Hard time-stop in minutes (300 = 5h, matches 60-bar backtest horizon)
 input double InpRiskPercent      = 1.0;    // Account % to risk per trade (0 = use fixed lot)
 input double InpFixedLot         = 0.10;   // Fixed lot when InpRiskPercent = 0
 input double InpMaxLotSize       = 1.00;   // Hard ceiling on calculated lot
