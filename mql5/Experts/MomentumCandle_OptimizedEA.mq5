@@ -92,10 +92,28 @@ PendingTrade g_pending = {false, 0, 0, "", 0, 0, 0, 0, 0, 0};
 int OnInit()
   {
    g_trade.SetExpertMagicNumber(InpMagic);
-   g_trade.SetTypeFilling(ORDER_FILLING_FOK);
+   g_trade.SetTypeFilling(DetectFillingMode());
    g_trade.SetDeviationInPoints(50);
    g_trade.SetMarginMode();
    return INIT_SUCCEEDED;
+  }
+
+//+------------------------------------------------------------------+
+//| Pick the safest supported filling mode for the current symbol.   |
+//| InstaForex demo only allows RETURN; ECN brokers usually allow    |
+//| FOK / IOC. Falls back to RETURN if the symbol mask is empty.     |
+//+------------------------------------------------------------------+
+ENUM_ORDER_TYPE_FILLING DetectFillingMode()
+  {
+   const long fmask = SymbolInfoInteger(_Symbol, SYMBOL_FILLING_MODE);
+   ENUM_ORDER_TYPE_FILLING mode = ORDER_FILLING_RETURN;
+   if((fmask & SYMBOL_FILLING_FOK) != 0)
+      mode = ORDER_FILLING_FOK;
+   else if((fmask & SYMBOL_FILLING_IOC) != 0)
+      mode = ORDER_FILLING_IOC;
+   PrintFormat("[MC-Opt] filling mask=%d, using %s",
+               (int)fmask, EnumToString(mode));
+   return mode;
   }
 
 //+------------------------------------------------------------------+

@@ -3,18 +3,23 @@
 Living checkpoint. Loaded automatically via `opencode.json` at every
 session start. Read this before deriving anything from scratch.
 
-Last updated: 2026-05-21
+Last updated: 2026-05-21 (Phase 7 + EA filling-mode fix)
 
 ## Current state — at-a-glance
 
 ```
-main branch:                origin/main @ 043990b
+main branch:                origin/main @ 043990b (uncommitted phase 6+7 work)
 deployable strategy tag:    v0.5.0-deployable
 S/R toolset tag:            v0.6.0-sr-aware
 
 Backtest verdict: v0.5.0 is the only strategy with multi-month edge.
-Five backtest phases attempted; four rejected; one adopted.
-Next step:        30-day demo forward-test of v0.5.0 OR more research.
+Six backtest phases attempted; five rejected; one survives.
+17-month aggregate (Jan 2025 - May 2026): 256 trades, 70.7% WR,
+PF 1.45, +33.00R net. Four losing months out of seventeen (24%).
+Phase 7 confirms edge survives older data; PF eroded only 0.04
+when extended from 12 to 17 months.
+EA filling-mode auto-detect applied (InstaForex demo compatible).
+Next step:        30-day demo forward-test of v0.5.0.
 ```
 
 ## What works (deployed)
@@ -36,18 +41,32 @@ Position cap:  1 (one trade at a time, magic-namespaced)
 Time stop:     30-min hard exit
 Risk:          1% account per trade (configurable)
 
-5-month backtest (Jan-May 2026 M5 XAUUSD):
-  189 trades, WR 72.5%, PF 1.54, mean RR/win 0.586
-  +0.149 R per trade gross
-  After ~80pt InstaForex spread: ~+0.05 R per trade net
-  ~38 trades/month average, 1 losing month per 5 expected
+12-month backtest (Jun 2025 - May 2026 M5 XAUUSD):
+  242 trades, WR 71.5%, PF 1.49, mean RR/win 0.586
+  +0.138 R per trade gross, +33.31 R net
+  After ~80pt InstaForex spread: ~+0.04 R per trade net
+  ~20 trades/month average, 2 losing months per 12 expected
 
-Per-month stability:
-  2026-01:  44t  WR 59%  PF 0.85   ← losing month
+17-month deep-history validation (Phase 7, Jan 2025 - May 2026):
+  256 trades, WR 70.7%, PF 1.45, +33.00 R net
+  Edge holds; PF eroded only 0.04 when extended.
+  Worst month: April 2025 -2.83R on 6 trades (sparse).
+  6 of 17 months effectively no-trade (volatility too low).
+  93% of net R from 9 of 17 active months — regime-dependent.
+
+Per-month stability (12-month run):
+  2025-06:   1t  WR 100% PF inf    sparse
+  2025-07:   0t   -      -          no signals
+  2025-08:   1t  WR  0%  PF 0.00   sparse, single loss
+  2025-09:   1t  WR 100% PF inf    sparse
+  2025-10:  33t  WR 73%  PF 1.56   first month with real volume
+  2025-11:  10t  WR 70%  PF 1.37
+  2025-12:   7t  WR 43%  PF 0.59   ← losing month (-1.24R)
+  2026-01:  44t  WR 59%  PF 0.85   ← losing month (-2.77R)
   2026-02:  42t  WR 74%  PF 1.65
-  2026-03:  63t  WR 79%  PF 2.25
-  2026-04:  30t  WR 70%  PF 1.37   ← OOS validation
-  2026-05:  10t  WR 90%  PF 5.27   ← in-sample, lucky variance
+  2026-03:  63t  WR 79%  PF 2.25   best month (+16.28R)
+  2026-04:  30t  WR 70%  PF 1.37   OOS validation
+  2026-05:  10t  WR 90%  PF 5.27   in-sample, lucky variance
 ```
 
 Spec doc: `docs/deployment.md`
@@ -60,8 +79,9 @@ Strategy doc: `docs/strategies/momentum-candle.md`
 | 3 | Add S/R confluence filter on top of v0.5.0 | REJECTED — hurts PF (1.54 → 1.22) |
 | 4 | 3WS/3BC + S/R combined strategy, 6 variants | ALL 6 LOST money |
 | 5 | Fade failed 3WS/3BC at S/R | HYPOTHESIS FALSIFIED, only 3 trades in 5 months |
+| 6 | ICT/AMD portfolio (LSD, SRR) + confluences, 14 variants | ALL 14 REJECTED |
 
-Reports: `data/backtests/phase{3,4,5}-report.md`
+Reports: `data/backtests/phase{3,4,5,6}-report.md`
 
 These rejections are evidence-backed. **Don't re-test them without
 fundamentally new approach** (different timeframe, different signal
@@ -171,7 +191,8 @@ Safety:      MT5_DRY_RUN=1 default; CONFIRM_LIVE token required for
 - **MT5 data folder:**
   `C:\Users\DELL\AppData\Roaming\MetaQuotes\Terminal\F762D69EEEA9B4430D7F17C82167C844`
 - **Cached data files:**
-  `cache/2026-{01,02,03,04,05}-m5.json` (5 months M5 XAUUSD, ~28k bars total, gitignored)
+  `cache/2025-{01..12}-m5.json` + `cache/2026-{01..05}-m5.json`
+  (17 months M5 XAUUSD, ~95k bars total, gitignored)
 - **Cached candle dump from MCP:**
   `C:\Users\DELL\.local\share\opencode\tool-output\tool_e3c60fb800018NefI01GMfrDQg`
   (used for the eye-tag dataset; 1500 M5 bars)
@@ -185,8 +206,10 @@ Safety:      MT5_DRY_RUN=1 default; CONFIRM_LIVE token required for
 5. **One position at a time (cap=1) outperforms layered positions.** Phase 2.5 layered backtest.
 6. **Pullback_236 entry > next-bar-open** for RR balance. Universal across phases.
 7. **Volume filter (V5) is dead.** Across 5 months, V5 mean YES 1.27x vs NO 1.16x — no signal.
+8. **ICT sweep-rejection (SRR) at major S/R LOSES MONEY at scale.** Phase 6 verdict — 1875 trades, WR 48.8%, -419R net, 12/12 losing months. The classic "stop hunts reverse" narrative is falsified on M5 XAUUSD. **Do not retest with different S/R parameters; the result is structural.**
+9. **AMD model (London-sweep + NY-displacement, "LSD") is break-even, not edge.** Phase 6: 169 trades, 63.3% WR, +0.66R net. The bias exists but not enough to overcome 0.586:1 RR.
 
-## Five-phase research summary
+## Seven-phase research summary
 
 ```
 Phase 1 (May factor study)         12 features tested              extracted candidates
@@ -194,16 +217,26 @@ Phase 2 (5-month aggregate)        Jan-May 2026 OOS                v0.5.0 ADOPTE
 Phase 3 (S/R confluence on v0.5)   sr_band, sr_confluence          REJECTED
 Phase 4 (3WS/3BC + S/R)            6 variants × 5 months           ALL REJECTED
 Phase 5 (fade failed 3WS/3BC)      3 fade variants                 REJECTED (n=3, no edge)
+Phase 6 (ICT/AMD portfolio)        14 variants (LSD, SRR + conf)   ALL REJECTED
+                                                                    SRR -419R / 12mo, falsifies "stop-hunt reverses"
+                                                                    LSD break-even +0.66R / 12mo
+Phase 7 (17-month deep-history)    v0.5.0 extended Jan 25-May 26   CONFIRMED
+                                                                    PF 1.45, +33R, 4/17 losing months
+                                                                    Edge survives older data; mild erosion only
 
-Healthy ratio: 1 win / 4 losses = we know what works AND what doesn't.
+Healthy ratio: 2 confirmations / 5 rejections = we know what works AND what doesn't.
 ```
 
 ## Resume point — next session can pick from these
 
 The strategy work has reached its honest endpoint. Continued
 backtesting on M5 XAUUSD risks more curve-fits than real lifts.
+The 12-month aggregate is now in: +33R net, PF 1.49, 71.5% WR
+across 242 trades. Two losing months (Dec 2025, Jan 2026) both
+shallow. No further backtest scope worth chasing without changing
+timeframe or symbol.
 
-Three options ranked by impact:
+Two options ranked by impact:
 
 1. **30-day demo forward-test of `MomentumCandle_OptimizedEA`**
    on InstaForex demo. The EA is built, compiled, deployed.
@@ -211,23 +244,31 @@ Three options ranked by impact:
    remaining unknown. Drag on a XAUUSD M5 chart, walk away,
    log daily. Decision after 30 days: real money or diagnose.
 
-2. **Pull 2025 H2 data (Jul-Dec)** to extend OOS from 5 to 11
-   months. ~10 min of compute via `scripts/pull_month.py`.
-   Strengthens statistical case before any real money.
+   PRE-FLIGHT FIX APPLIED: filling-mode auto-detect added at
+   OnInit (replaces hardcoded `ORDER_FILLING_FOK`). Picks
+   RETURN on InstaForex, FOK/IOC on ECN brokers. Recompile
+   in MetaEditor before attaching to chart.
 
-3. **Manual-trade logger MCP tool** (~80 LOC) — record user's
+2. **Manual-trade logger MCP tool** (~80 LOC) — record user's
    manual trades alongside algo's, compare eye vs algo over
    the 30-day demo period. Builds the data for the next
    research cycle.
 
-User's last conversation point (2026-05-21): philosophical
-discussion about the gap between manual eye-trading and
-algorithmic. Conclusion: both are needed, they encode different
-slices of judgment, the algo is "math doing the bookkeeping for
-an opinion the human had."
+User's last conversation point (2026-05-21): asked about the
+"$100 → $1000 in a month" video framing. Honest math from the
+17-month backtest: +0.129 R/trade × 256 trades = ~+40%
+account growth at 1% risk over 17 months (~+27% annualized).
+Reaching 10x in 30 days would require >5% per-trade risk,
+which the same data shows would blow the account during the
+April 2025 / Dec 2025 / Jan 2026 losing streaks.
 
-Recommended path: **(1) and (2) in parallel.** Demo runs
-unattended; pull more data when convenient.
+Mas Tama in the second video (`cache/transcript-nX3_RCnaA4Y.txt`)
+explicitly warns against this and recommends 0.01 lot per $200
+with double-when-doubled scaling.
+
+Recommended path: **option 1 is now the only honest move.** All
+further backtests at the same TF/symbol will be noise. Phase 7
+already confirmed the strategy survives extension to older data.
 
 ## Composite score formula (used in eye-tag worksheets)
 
