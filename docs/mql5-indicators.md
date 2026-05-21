@@ -243,3 +243,114 @@ question into a number.
 - **Trade-management evolution** — break-even moves, trailing stops,
   partial closes. Out of scope; left for a future EA built on top of
   the indicator buffers.
+
+## AmdFvgSignal — manual ICT entry indicator
+
+`AmdFvgSignal.mq5` is unrelated to the momentum-candle scoring above.
+It paints the canonical ICT **Accumulation → Manipulation → FVG →
+Distribution** sequence on any chart and alerts when an FVG completes
+the sequence. This is a manual-trading aid, not part of the algorithmic
+strategy.
+
+The Phase 9 backtest established that bolting an FVG filter onto an
+LSD-style signal does not produce algorithmic edge once look-ahead bias
+is removed. The eye-trader workflow is different: a human waits for
+each step to *complete* before considering the next, which avoids the
+look-ahead trap by construction.
+
+### State machine
+
+```
+S0  WAIT_ACC      00:00–07:00 UTC builds Asia high/low
+                  At 07:00 UTC the range is locked → S1
+S1  WAIT_MANIP    07:00–12:00 UTC scans for sweep + close-back
+                    BSL sweep: bar.high > AccHi AND close back inside range
+                    SSL sweep: bar.low  < AccLo AND close back inside range
+                  Locks trade direction → S2
+                  No sweep by 12:00 UTC: sequence INVALIDATED for the day
+S2  WAIT_FVG      12:00 UTC onwards scans each closed bar for an FVG
+                  in the trade direction implied by the sweep:
+                    BSL sweep → bearish FVG (short bias)
+                    SSL sweep → bullish FVG (long  bias)
+                  Bullish FVG @ idx: candles[idx].low  > candles[idx-2].high
+                  Bearish FVG @ idx: candles[idx].high < candles[idx-2].low
+                  First match in direction fires alert → S3
+S3  DONE          Sequence complete. Idle until next UTC day.
+```
+
+State resets at every new UTC day. NY end (default 22:00 UTC) is the
+hard deadline; any sequence still incomplete is invalidated.
+
+### Visuals
+
+| Element | Object | Default color |
+|---|---|---|
+| Accumulation range | shaded rectangle from session start to NY end | `clrSlateGray` |
+| Manipulation marker | "M" text at the sweep bar | red (BSL) / green (SSL) |
+| FVG zone | shaded rectangle covering the gap | green (bullish) / red (bearish) |
+| Signal arrow | up/down arrow at the FVG bar | green (long) / red (short) |
+| Direction label | "AMD-UP" or "AMD-DOWN" text | matches arrow color |
+
+All objects use the `AMD_` prefix and are deleted on indicator deinit.
+Objects are non-selectable so they don't get accidentally dragged.
+
+### Inputs
+
+```
+Sessions (UTC, end-hour exclusive)
+  InpAsiaStartHourUTC    = 0       Asia start
+  InpAsiaEndHourUTC      = 7       Asia end (= London start)
+  InpLondonEndHourUTC    = 12      London end (= NY start)
+  InpNYEndHourUTC        = 22      NY end (sequence dies after this)
+
+Detection
+  InpRequireCloseBack    = true    Manip bar must close back inside range
+  InpMaxSequencesPerDay  = 1       Cap completed sequences per UTC day
+
+Visuals (colors, transparency, box extent — all toggleable)
+Alerts
+  InpAlertPopup, InpAlertSound, InpAlertPush, InpAlertEmail
+  InpAlertSoundFile      = "alert.wav"
+```
+
+### When the alert fires
+
+Exactly once per valid sequence, at the close of the FVG-completing bar.
+The alert message format:
+
+```
+[XAUUSD M5] AMD complete: AMD-DOWN on 2026.05.21 14:35 @ 3429.12
+```
+
+Includes terminal popup, sound, push notification, email — all
+individually toggleable. By default popup + sound are on; push and
+email are off.
+
+### Use it like this
+
+1. Drag the indicator onto any chart.
+2. Wait for the gray accumulation box to appear at 07:00 UTC.
+3. If you see an "M" in the London window, the sequence is armed.
+4. The alert fires when the FVG completes. The label tells you the
+   direction (AMD-UP = buy, AMD-DOWN = sell).
+5. Manage the trade however you like — this indicator only paints
+   the entry trigger.
+
+### What it deliberately does NOT do
+
+- No SL/TP suggestion. Pick your own.
+- No position sizing. Pick your own.
+- No order placement. Manual only.
+- No multi-day persistence. State resets at midnight UTC.
+- No multi-symbol scan. One chart, one symbol.
+- No backtest mode. Phase 9 already showed this combination has no
+  prospective edge as a fixed-rule algo. The chart indicator exists
+  for discretionary trading, where the human reads context the algo
+  can't.
+
+### Out of scope
+
+- Trade-management overlays (break-even, trail).
+- Higher-timeframe bias filtering.
+- Premium/discount overlay.
+- Sweep-rejection variants beyond AMD.
