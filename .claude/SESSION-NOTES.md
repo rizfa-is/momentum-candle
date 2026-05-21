@@ -89,8 +89,9 @@ Strategy doc: `docs/strategies/momentum-candle.md`
 | 4 | 3WS/3BC + S/R combined strategy, 6 variants | ALL 6 LOST money |
 | 5 | Fade failed 3WS/3BC at S/R | HYPOTHESIS FALSIFIED, only 3 trades in 5 months |
 | 6 | ICT/AMD portfolio (LSD, SRR) + confluences, 14 variants | ALL 14 REJECTED |
+| 9 | AMD (LSD) + FVG only, 6 variants incl. strict-timing control | ALL REJECTED — V2 look-ahead caught by V6 |
 
-Reports: `data/backtests/phase{3,4,5,6}-report.md`
+Reports: `data/backtests/phase{3,4,5,6,9}-report.md`
 
 These rejections are evidence-backed. **Don't re-test them without
 fundamentally new approach** (different timeframe, different signal
@@ -217,7 +218,7 @@ Safety:      MT5_DRY_RUN=1 default; CONFIRM_LIVE token required for
 6. **Pullback_236 entry > next-bar-open** for RR balance. Universal across phases.
 7. **Volume filter (V5) is dead.** Across 5 months, V5 mean YES 1.27x vs NO 1.16x — no signal.
 8. **ICT sweep-rejection (SRR) at major S/R LOSES MONEY at scale.** Phase 6 verdict — 1875 trades, WR 48.8%, -419R net, 12/12 losing months. The classic "stop hunts reverse" narrative is falsified on M5 XAUUSD. **Do not retest with different S/R parameters; the result is structural.**
-10. **Strategy is high-volatility-regime dependent.** Phase 8 confirmed: across 29 months, 93% of trades fired in just 9 months. 2024 produced 10 signals/year vs 2026 H1's ~30 signals/month. Quiet markets = no trading. This is correct behavior, not a bug. Annualized return collapses from ~27% (17-mo subset) to ~11.5% (full 29-mo) when low-vol periods are included.
+11. **LSD + FVG combination has NO deployable edge.** Phase 9 V2 looked like PF 1.65 / +44.62R / 7-of-29 losing months on 263 trades — but that result used bar `idx+1` data for entry on bar `idx+1` itself. The FVG can only be confirmed after `idx+1` closes. The strict-timing variant V6 (entry from `idx+2`) collapses to PF 1.08 / +6.53R / 14 losing months. The "edge" was entirely a look-ahead artifact. **Do not retest LSD+FVG without strict-timing control.** The diagnostic that showed 73.8% WR on FVGC-passing signals reflects retrospective correlation (bars that gapped in trade direction won more), not a prospective filter.
 
 ## Eight-phase research summary
 

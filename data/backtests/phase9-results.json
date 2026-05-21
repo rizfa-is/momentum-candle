@@ -1,0 +1,1842 @@
+{
+  "aggregate": {
+    "V1": {
+      "n_signals": 471,
+      "n_filled": 440,
+      "n_tp": 281,
+      "n_sl": 159,
+      "n_timeout": 0,
+      "wr": 0.6386363636363637,
+      "mean_rr": 0.5856481481481529,
+      "net_R": 5.567129629630955,
+      "per_trade_R": 0.012652567340070352,
+      "pf": 1.03501339389705,
+      "losing_months": 13,
+      "trading_months": 29
+    },
+    "V2": {
+      "n_signals": 289,
+      "n_filled": 263,
+      "n_tp": 194,
+      "n_sl": 69,
+      "n_timeout": 0,
+      "wr": 0.7376425855513308,
+      "mean_rr": 0.5856481481481531,
+      "net_R": 44.6157407407417,
+      "per_trade_R": 0.16964159977468327,
+      "pf": 1.6466049382716188,
+      "losing_months": 7,
+      "trading_months": 29
+    },
+    "V3": {
+      "n_signals": 0,
+      "n_filled": 0,
+      "n_tp": 0,
+      "n_sl": 0,
+      "n_timeout": 0,
+      "wr": 0.0,
+      "mean_rr": 0.0,
+      "net_R": 0.0,
+      "per_trade_R": 0.0,
+      "pf": 0.0,
+      "losing_months": 0,
+      "trading_months": 0
+    },
+    "V4": {
+      "n_signals": 0,
+      "n_filled": 0,
+      "n_tp": 0,
+      "n_sl": 0,
+      "n_timeout": 0,
+      "wr": 0.0,
+      "mean_rr": 0.0,
+      "net_R": 0.0,
+      "per_trade_R": 0.0,
+      "pf": 0.0,
+      "losing_months": 0,
+      "trading_months": 0
+    },
+    "V5": {
+      "n_signals": 289,
+      "n_filled": 263,
+      "n_tp": 108,
+      "n_sl": 154,
+      "n_timeout": 1,
+      "wr": 0.41064638783269963,
+      "mean_rr": 1.4999999999999816,
+      "net_R": 7.9999999999980105,
+      "per_trade_R": 0.03041825095056278,
+      "pf": 1.051948051948039,
+      "losing_months": 18,
+      "trading_months": 29
+    },
+    "V6": {
+      "n_signals": 289,
+      "n_filled": 244,
+      "n_tp": 158,
+      "n_sl": 86,
+      "n_timeout": 0,
+      "wr": 0.6475409836065574,
+      "mean_rr": 0.5856481481481538,
+      "net_R": 6.5324074074083,
+      "per_trade_R": 0.026772161505771722,
+      "pf": 1.0759582256675384,
+      "losing_months": 14,
+      "trading_months": 29
+    }
+  },
+  "per_month": {
+    "V1": {
+      "2024-01": {
+        "month": "2024-01",
+        "n_signals": 21,
+        "n_filled": 19,
+        "n_tp": 11,
+        "n_sl": 8,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 6.44212962962961
+      },
+      "2024-02": {
+        "month": "2024-02",
+        "n_signals": 18,
+        "n_filled": 17,
+        "n_tp": 12,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 7.027777777777724
+      },
+      "2024-03": {
+        "month": "2024-03",
+        "n_signals": 13,
+        "n_filled": 12,
+        "n_tp": 7,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.099537037035643
+      },
+      "2024-04": {
+        "month": "2024-04",
+        "n_signals": 14,
+        "n_filled": 13,
+        "n_tp": 9,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.270833333333538
+      },
+      "2024-05": {
+        "month": "2024-05",
+        "n_signals": 16,
+        "n_filled": 16,
+        "n_tp": 9,
+        "n_sl": 7,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 5.2708333333330435
+      },
+      "2024-06": {
+        "month": "2024-06",
+        "n_signals": 18,
+        "n_filled": 16,
+        "n_tp": 10,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 5.856481481482165
+      },
+      "2024-07": {
+        "month": "2024-07",
+        "n_signals": 22,
+        "n_filled": 21,
+        "n_tp": 14,
+        "n_sl": 7,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 8.199074074074016
+      },
+      "2024-08": {
+        "month": "2024-08",
+        "n_signals": 18,
+        "n_filled": 17,
+        "n_tp": 10,
+        "n_sl": 7,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.856481481481913
+      },
+      "2024-09": {
+        "month": "2024-09",
+        "n_signals": 17,
+        "n_filled": 17,
+        "n_tp": 10,
+        "n_sl": 7,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 5.856481481482197
+      },
+      "2024-10": {
+        "month": "2024-10",
+        "n_signals": 20,
+        "n_filled": 16,
+        "n_tp": 11,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 4,
+        "sum_rr": 6.442129629630417
+      },
+      "2024-11": {
+        "month": "2024-11",
+        "n_signals": 17,
+        "n_filled": 15,
+        "n_tp": 11,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 6.442129629629747
+      },
+      "2024-12": {
+        "month": "2024-12",
+        "n_signals": 17,
+        "n_filled": 16,
+        "n_tp": 13,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 7.613425925926158
+      },
+      "2025-01": {
+        "month": "2025-01",
+        "n_signals": 19,
+        "n_filled": 18,
+        "n_tp": 8,
+        "n_sl": 10,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.685185185185244
+      },
+      "2025-02": {
+        "month": "2025-02",
+        "n_signals": 17,
+        "n_filled": 16,
+        "n_tp": 12,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 7.027777777777831
+      },
+      "2025-03": {
+        "month": "2025-03",
+        "n_signals": 19,
+        "n_filled": 17,
+        "n_tp": 12,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 7.027777777777497
+      },
+      "2025-04": {
+        "month": "2025-04",
+        "n_signals": 15,
+        "n_filled": 15,
+        "n_tp": 10,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 5.856481481481926
+      },
+      "2025-05": {
+        "month": "2025-05",
+        "n_signals": 11,
+        "n_filled": 10,
+        "n_tp": 5,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 2.928240740740785
+      },
+      "2025-06": {
+        "month": "2025-06",
+        "n_signals": 17,
+        "n_filled": 16,
+        "n_tp": 10,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.856481481481884
+      },
+      "2025-07": {
+        "month": "2025-07",
+        "n_signals": 20,
+        "n_filled": 18,
+        "n_tp": 12,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 7.027777777778011
+      },
+      "2025-08": {
+        "month": "2025-08",
+        "n_signals": 16,
+        "n_filled": 16,
+        "n_tp": 10,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 5.856481481481474
+      },
+      "2025-09": {
+        "month": "2025-09",
+        "n_signals": 18,
+        "n_filled": 17,
+        "n_tp": 9,
+        "n_sl": 8,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.270833333333306
+      },
+      "2025-10": {
+        "month": "2025-10",
+        "n_signals": 14,
+        "n_filled": 13,
+        "n_tp": 9,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.2708333333331066
+      },
+      "2025-11": {
+        "month": "2025-11",
+        "n_signals": 13,
+        "n_filled": 13,
+        "n_tp": 10,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 5.856481481481083
+      },
+      "2025-12": {
+        "month": "2025-12",
+        "n_signals": 15,
+        "n_filled": 14,
+        "n_tp": 9,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.2708333333337825
+      },
+      "2026-01": {
+        "month": "2026-01",
+        "n_signals": 15,
+        "n_filled": 14,
+        "n_tp": 8,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.68518518518501
+      },
+      "2026-02": {
+        "month": "2026-02",
+        "n_signals": 12,
+        "n_filled": 10,
+        "n_tp": 5,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 2.928240740740556
+      },
+      "2026-03": {
+        "month": "2026-03",
+        "n_signals": 14,
+        "n_filled": 14,
+        "n_tp": 9,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 5.27083333333322
+      },
+      "2026-04": {
+        "month": "2026-04",
+        "n_signals": 14,
+        "n_filled": 13,
+        "n_tp": 9,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.270833333332963
+      },
+      "2026-05": {
+        "month": "2026-05",
+        "n_signals": 11,
+        "n_filled": 11,
+        "n_tp": 7,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 4.099537037037116
+      }
+    },
+    "V2": {
+      "2024-01": {
+        "month": "2024-01",
+        "n_signals": 11,
+        "n_filled": 9,
+        "n_tp": 6,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 3.513888888888585
+      },
+      "2024-02": {
+        "month": "2024-02",
+        "n_signals": 8,
+        "n_filled": 7,
+        "n_tp": 6,
+        "n_sl": 1,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 3.5138888888886792
+      },
+      "2024-03": {
+        "month": "2024-03",
+        "n_signals": 9,
+        "n_filled": 8,
+        "n_tp": 5,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 2.9282407407394357
+      },
+      "2024-04": {
+        "month": "2024-04",
+        "n_signals": 10,
+        "n_filled": 9,
+        "n_tp": 7,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.099537037037283
+      },
+      "2024-05": {
+        "month": "2024-05",
+        "n_signals": 12,
+        "n_filled": 12,
+        "n_tp": 6,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 3.5138888888889244
+      },
+      "2024-06": {
+        "month": "2024-06",
+        "n_signals": 12,
+        "n_filled": 10,
+        "n_tp": 8,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 4.685185185186026
+      },
+      "2024-07": {
+        "month": "2024-07",
+        "n_signals": 11,
+        "n_filled": 10,
+        "n_tp": 8,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.6851851851857305
+      },
+      "2024-08": {
+        "month": "2024-08",
+        "n_signals": 7,
+        "n_filled": 6,
+        "n_tp": 3,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 1.7569444444444215
+      },
+      "2024-09": {
+        "month": "2024-09",
+        "n_signals": 9,
+        "n_filled": 9,
+        "n_tp": 9,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 5.270833333333798
+      },
+      "2024-10": {
+        "month": "2024-10",
+        "n_signals": 13,
+        "n_filled": 10,
+        "n_tp": 7,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 3,
+        "sum_rr": 4.099537037037308
+      },
+      "2024-11": {
+        "month": "2024-11",
+        "n_signals": 11,
+        "n_filled": 10,
+        "n_tp": 9,
+        "n_sl": 1,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.270833333333325
+      },
+      "2024-12": {
+        "month": "2024-12",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 10,
+        "n_sl": 1,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.856481481481633
+      },
+      "2025-01": {
+        "month": "2025-01",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 7,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.099537037037134
+      },
+      "2025-02": {
+        "month": "2025-02",
+        "n_signals": 11,
+        "n_filled": 11,
+        "n_tp": 9,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 5.270833333333368
+      },
+      "2025-03": {
+        "month": "2025-03",
+        "n_signals": 14,
+        "n_filled": 12,
+        "n_tp": 9,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 5.270833333333337
+      },
+      "2025-04": {
+        "month": "2025-04",
+        "n_signals": 4,
+        "n_filled": 4,
+        "n_tp": 4,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 2.3425925925928386
+      },
+      "2025-05": {
+        "month": "2025-05",
+        "n_signals": 9,
+        "n_filled": 8,
+        "n_tp": 5,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 2.928240740740785
+      },
+      "2025-06": {
+        "month": "2025-06",
+        "n_signals": 13,
+        "n_filled": 12,
+        "n_tp": 9,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.270833333333723
+      },
+      "2025-07": {
+        "month": "2025-07",
+        "n_signals": 11,
+        "n_filled": 10,
+        "n_tp": 7,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.09953703703721
+      },
+      "2025-08": {
+        "month": "2025-08",
+        "n_signals": 6,
+        "n_filled": 6,
+        "n_tp": 5,
+        "n_sl": 1,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 2.928240740740738
+      },
+      "2025-09": {
+        "month": "2025-09",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 6,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 3.5138888888887454
+      },
+      "2025-10": {
+        "month": "2025-10",
+        "n_signals": 9,
+        "n_filled": 8,
+        "n_tp": 7,
+        "n_sl": 1,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.099537037036928
+      },
+      "2025-11": {
+        "month": "2025-11",
+        "n_signals": 10,
+        "n_filled": 10,
+        "n_tp": 9,
+        "n_sl": 1,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 5.270833333332919
+      },
+      "2025-12": {
+        "month": "2025-12",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 7,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.099537037037342
+      },
+      "2026-01": {
+        "month": "2026-01",
+        "n_signals": 11,
+        "n_filled": 10,
+        "n_tp": 6,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 3.5138888888887942
+      },
+      "2026-02": {
+        "month": "2026-02",
+        "n_signals": 6,
+        "n_filled": 5,
+        "n_tp": 3,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 1.756944444444473
+      },
+      "2026-03": {
+        "month": "2026-03",
+        "n_signals": 9,
+        "n_filled": 9,
+        "n_tp": 7,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 4.099537037036849
+      },
+      "2026-04": {
+        "month": "2026-04",
+        "n_signals": 10,
+        "n_filled": 9,
+        "n_tp": 6,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 3.5138888888886255
+      },
+      "2026-05": {
+        "month": "2026-05",
+        "n_signals": 5,
+        "n_filled": 5,
+        "n_tp": 4,
+        "n_sl": 1,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 2.3425925925927347
+      }
+    },
+    "V3": {
+      "2024-01": {
+        "month": "2024-01",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-02": {
+        "month": "2024-02",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-03": {
+        "month": "2024-03",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-04": {
+        "month": "2024-04",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-05": {
+        "month": "2024-05",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-06": {
+        "month": "2024-06",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-07": {
+        "month": "2024-07",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-08": {
+        "month": "2024-08",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-09": {
+        "month": "2024-09",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-10": {
+        "month": "2024-10",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-11": {
+        "month": "2024-11",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-12": {
+        "month": "2024-12",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-01": {
+        "month": "2025-01",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-02": {
+        "month": "2025-02",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-03": {
+        "month": "2025-03",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-04": {
+        "month": "2025-04",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-05": {
+        "month": "2025-05",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-06": {
+        "month": "2025-06",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-07": {
+        "month": "2025-07",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-08": {
+        "month": "2025-08",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-09": {
+        "month": "2025-09",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-10": {
+        "month": "2025-10",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-11": {
+        "month": "2025-11",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-12": {
+        "month": "2025-12",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2026-01": {
+        "month": "2026-01",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2026-02": {
+        "month": "2026-02",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2026-03": {
+        "month": "2026-03",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2026-04": {
+        "month": "2026-04",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2026-05": {
+        "month": "2026-05",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      }
+    },
+    "V4": {
+      "2024-01": {
+        "month": "2024-01",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-02": {
+        "month": "2024-02",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-03": {
+        "month": "2024-03",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-04": {
+        "month": "2024-04",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-05": {
+        "month": "2024-05",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-06": {
+        "month": "2024-06",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-07": {
+        "month": "2024-07",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-08": {
+        "month": "2024-08",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-09": {
+        "month": "2024-09",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-10": {
+        "month": "2024-10",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-11": {
+        "month": "2024-11",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2024-12": {
+        "month": "2024-12",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-01": {
+        "month": "2025-01",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-02": {
+        "month": "2025-02",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-03": {
+        "month": "2025-03",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-04": {
+        "month": "2025-04",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-05": {
+        "month": "2025-05",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-06": {
+        "month": "2025-06",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-07": {
+        "month": "2025-07",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-08": {
+        "month": "2025-08",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-09": {
+        "month": "2025-09",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-10": {
+        "month": "2025-10",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-11": {
+        "month": "2025-11",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2025-12": {
+        "month": "2025-12",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2026-01": {
+        "month": "2026-01",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2026-02": {
+        "month": "2026-02",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2026-03": {
+        "month": "2026-03",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2026-04": {
+        "month": "2026-04",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      },
+      "2026-05": {
+        "month": "2026-05",
+        "n_signals": 0,
+        "n_filled": 0,
+        "n_tp": 0,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 0.0
+      }
+    },
+    "V5": {
+      "2024-01": {
+        "month": "2024-01",
+        "n_signals": 11,
+        "n_filled": 9,
+        "n_tp": 6,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 8.999999999999769
+      },
+      "2024-02": {
+        "month": "2024-02",
+        "n_signals": 8,
+        "n_filled": 7,
+        "n_tp": 2,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 2.999999999999817
+      },
+      "2024-03": {
+        "month": "2024-03",
+        "n_signals": 9,
+        "n_filled": 8,
+        "n_tp": 2,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 2.999999999999849
+      },
+      "2024-04": {
+        "month": "2024-04",
+        "n_signals": 10,
+        "n_filled": 9,
+        "n_tp": 5,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 7.499999999999686
+      },
+      "2024-05": {
+        "month": "2024-05",
+        "n_signals": 12,
+        "n_filled": 12,
+        "n_tp": 4,
+        "n_sl": 8,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 5.9999999999997975
+      },
+      "2024-06": {
+        "month": "2024-06",
+        "n_signals": 12,
+        "n_filled": 10,
+        "n_tp": 4,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 5.999999999999754
+      },
+      "2024-07": {
+        "month": "2024-07",
+        "n_signals": 11,
+        "n_filled": 10,
+        "n_tp": 5,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 7.4999999999995355
+      },
+      "2024-08": {
+        "month": "2024-08",
+        "n_signals": 7,
+        "n_filled": 6,
+        "n_tp": 1,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 1.4999999999999183
+      },
+      "2024-09": {
+        "month": "2024-09",
+        "n_signals": 9,
+        "n_filled": 9,
+        "n_tp": 7,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 10.500000000000066
+      },
+      "2024-10": {
+        "month": "2024-10",
+        "n_signals": 13,
+        "n_filled": 10,
+        "n_tp": 3,
+        "n_sl": 7,
+        "n_to": 0,
+        "n_unfilled": 3,
+        "sum_rr": 4.50000000000001
+      },
+      "2024-11": {
+        "month": "2024-11",
+        "n_signals": 11,
+        "n_filled": 10,
+        "n_tp": 8,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 12.000000000000295
+      },
+      "2024-12": {
+        "month": "2024-12",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 6,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 8.99999999999988
+      },
+      "2025-01": {
+        "month": "2025-01",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 5,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 7.4999999999998845
+      },
+      "2025-02": {
+        "month": "2025-02",
+        "n_signals": 11,
+        "n_filled": 11,
+        "n_tp": 4,
+        "n_sl": 7,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 6.0000000000000036
+      },
+      "2025-03": {
+        "month": "2025-03",
+        "n_signals": 14,
+        "n_filled": 12,
+        "n_tp": 4,
+        "n_sl": 8,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 5.999999999999889
+      },
+      "2025-04": {
+        "month": "2025-04",
+        "n_signals": 4,
+        "n_filled": 4,
+        "n_tp": 1,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 1.5
+      },
+      "2025-05": {
+        "month": "2025-05",
+        "n_signals": 9,
+        "n_filled": 8,
+        "n_tp": 4,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.999999999999866
+      },
+      "2025-06": {
+        "month": "2025-06",
+        "n_signals": 13,
+        "n_filled": 12,
+        "n_tp": 6,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 9.000000000000028
+      },
+      "2025-07": {
+        "month": "2025-07",
+        "n_signals": 11,
+        "n_filled": 10,
+        "n_tp": 3,
+        "n_sl": 7,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.500000000000086
+      },
+      "2025-08": {
+        "month": "2025-08",
+        "n_signals": 6,
+        "n_filled": 6,
+        "n_tp": 2,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 2.9999999999999254
+      },
+      "2025-09": {
+        "month": "2025-09",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 4,
+        "n_sl": 7,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.999999999999993
+      },
+      "2025-10": {
+        "month": "2025-10",
+        "n_signals": 9,
+        "n_filled": 8,
+        "n_tp": 5,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 7.500000000000103
+      },
+      "2025-11": {
+        "month": "2025-11",
+        "n_signals": 10,
+        "n_filled": 10,
+        "n_tp": 1,
+        "n_sl": 9,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 1.5
+      },
+      "2025-12": {
+        "month": "2025-12",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 4,
+        "n_sl": 7,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 6.000000000000022
+      },
+      "2026-01": {
+        "month": "2026-01",
+        "n_signals": 11,
+        "n_filled": 10,
+        "n_tp": 2,
+        "n_sl": 8,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 2.999999999999904
+      },
+      "2026-02": {
+        "month": "2026-02",
+        "n_signals": 6,
+        "n_filled": 5,
+        "n_tp": 3,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.500000000000097
+      },
+      "2026-03": {
+        "month": "2026-03",
+        "n_signals": 9,
+        "n_filled": 9,
+        "n_tp": 3,
+        "n_sl": 5,
+        "n_to": 1,
+        "n_unfilled": 0,
+        "sum_rr": 4.499999999999948
+      },
+      "2026-04": {
+        "month": "2026-04",
+        "n_signals": 10,
+        "n_filled": 9,
+        "n_tp": 3,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.5
+      },
+      "2026-05": {
+        "month": "2026-05",
+        "n_signals": 5,
+        "n_filled": 5,
+        "n_tp": 1,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 1.4999999999998879
+      }
+    },
+    "V6": {
+      "2024-01": {
+        "month": "2024-01",
+        "n_signals": 11,
+        "n_filled": 9,
+        "n_tp": 6,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 3.513888888888585
+      },
+      "2024-02": {
+        "month": "2024-02",
+        "n_signals": 8,
+        "n_filled": 6,
+        "n_tp": 4,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 2.342592592592347
+      },
+      "2024-03": {
+        "month": "2024-03",
+        "n_signals": 9,
+        "n_filled": 7,
+        "n_tp": 2,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 1.171296296295954
+      },
+      "2024-04": {
+        "month": "2024-04",
+        "n_signals": 10,
+        "n_filled": 8,
+        "n_tp": 4,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 2.342592592592773
+      },
+      "2024-05": {
+        "month": "2024-05",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 5,
+        "n_sl": 6,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 2.928240740740767
+      },
+      "2024-06": {
+        "month": "2024-06",
+        "n_signals": 12,
+        "n_filled": 10,
+        "n_tp": 8,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 4.685185185186026
+      },
+      "2024-07": {
+        "month": "2024-07",
+        "n_signals": 11,
+        "n_filled": 8,
+        "n_tp": 6,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 3,
+        "sum_rr": 3.5138888888891153
+      },
+      "2024-08": {
+        "month": "2024-08",
+        "n_signals": 7,
+        "n_filled": 6,
+        "n_tp": 3,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 1.7569444444444215
+      },
+      "2024-09": {
+        "month": "2024-09",
+        "n_signals": 9,
+        "n_filled": 8,
+        "n_tp": 8,
+        "n_sl": 0,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.685185185185745
+      },
+      "2024-10": {
+        "month": "2024-10",
+        "n_signals": 13,
+        "n_filled": 9,
+        "n_tp": 6,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 4,
+        "sum_rr": 3.5138888888889834
+      },
+      "2024-11": {
+        "month": "2024-11",
+        "n_signals": 11,
+        "n_filled": 10,
+        "n_tp": 7,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.099537037037118
+      },
+      "2024-12": {
+        "month": "2024-12",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 9,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 5.270833333333293
+      },
+      "2025-01": {
+        "month": "2025-01",
+        "n_signals": 12,
+        "n_filled": 9,
+        "n_tp": 4,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 3,
+        "sum_rr": 2.3425925925930113
+      },
+      "2025-02": {
+        "month": "2025-02",
+        "n_signals": 11,
+        "n_filled": 9,
+        "n_tp": 5,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 2.928240740740766
+      },
+      "2025-03": {
+        "month": "2025-03",
+        "n_signals": 14,
+        "n_filled": 12,
+        "n_tp": 9,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 5.270833333333337
+      },
+      "2025-04": {
+        "month": "2025-04",
+        "n_signals": 4,
+        "n_filled": 4,
+        "n_tp": 3,
+        "n_sl": 1,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 1.7569444444446487
+      },
+      "2025-05": {
+        "month": "2025-05",
+        "n_signals": 9,
+        "n_filled": 7,
+        "n_tp": 3,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 1.7569444444442226
+      },
+      "2025-06": {
+        "month": "2025-06",
+        "n_signals": 13,
+        "n_filled": 9,
+        "n_tp": 5,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 4,
+        "sum_rr": 2.928240740740837
+      },
+      "2025-07": {
+        "month": "2025-07",
+        "n_signals": 11,
+        "n_filled": 9,
+        "n_tp": 5,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 2.9282407407407236
+      },
+      "2025-08": {
+        "month": "2025-08",
+        "n_signals": 6,
+        "n_filled": 6,
+        "n_tp": 5,
+        "n_sl": 1,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 2.928240740740738
+      },
+      "2025-09": {
+        "month": "2025-09",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 6,
+        "n_sl": 5,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 3.5138888888887454
+      },
+      "2025-10": {
+        "month": "2025-10",
+        "n_signals": 9,
+        "n_filled": 8,
+        "n_tp": 7,
+        "n_sl": 1,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.099537037036928
+      },
+      "2025-11": {
+        "month": "2025-11",
+        "n_signals": 10,
+        "n_filled": 10,
+        "n_tp": 8,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 4.685185185184822
+      },
+      "2025-12": {
+        "month": "2025-12",
+        "n_signals": 12,
+        "n_filled": 11,
+        "n_tp": 7,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 4.099537037037342
+      },
+      "2026-01": {
+        "month": "2026-01",
+        "n_signals": 11,
+        "n_filled": 10,
+        "n_tp": 6,
+        "n_sl": 4,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 3.5138888888887942
+      },
+      "2026-02": {
+        "month": "2026-02",
+        "n_signals": 6,
+        "n_filled": 5,
+        "n_tp": 3,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 1.756944444444473
+      },
+      "2026-03": {
+        "month": "2026-03",
+        "n_signals": 9,
+        "n_filled": 8,
+        "n_tp": 6,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 1,
+        "sum_rr": 3.5138888888887254
+      },
+      "2026-04": {
+        "month": "2026-04",
+        "n_signals": 10,
+        "n_filled": 8,
+        "n_tp": 5,
+        "n_sl": 3,
+        "n_to": 0,
+        "n_unfilled": 2,
+        "sum_rr": 2.928240740740491
+      },
+      "2026-05": {
+        "month": "2026-05",
+        "n_signals": 5,
+        "n_filled": 5,
+        "n_tp": 3,
+        "n_sl": 2,
+        "n_to": 0,
+        "n_unfilled": 0,
+        "sum_rr": 1.7569444444445679
+      }
+    }
+  }
+}

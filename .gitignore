@@ -48,3 +48,6 @@ Thumbs.db
 cache/
 logs/
 *.local.log
+
+# Personal account histories (CSVs from MT5 terminal)
+data/history/
