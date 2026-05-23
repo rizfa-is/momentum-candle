@@ -51,3 +51,7 @@ logs/
 
 # Personal account histories (CSVs from MT5 terminal)
 data/history/
+
+# EURUSD/other-symbol month dumps (kept gitignored alongside main XAU cache)
+cache/eurusd-*-m5.json
+cache/xagusd-*-m5.json
