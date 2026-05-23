@@ -55,3 +55,6 @@ data/history/
 # EURUSD/other-symbol month dumps (kept gitignored alongside main XAU cache)
 cache/eurusd-*-m5.json
 cache/xagusd-*-m5.json
+cache/xpdusd-*-m5.json
+cache/#cl-*-m5.json
+cache/#brent-*-m5.json
